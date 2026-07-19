@@ -1,0 +1,7 @@
+server:
+  port: 8082
+bedrock:
+  authentication:
+    secret-key: MIHwMIGoBgcqhkjOOsdsAQBMIGcAkEAKaCzo4Syrom78z3EQ5SbbB4sF7ey80etKII
+    jwt-iss: github
+    jwt-subject: github.com

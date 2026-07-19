@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.bedrock.resource.mapper.OssConfigMapper">
+    <select id="selectDetailById" resultType="org.bedrock.resource.vo.OssConfigDetailVO">
+        SELECT id,
+               config_name      AS configName,
+               config_code      AS configCode,
+               service_provider AS serviceProvider,
+               endpoint,
+               access_key       AS accessKey,
+               secret_key       AS secretKey,
+               bucket_name      AS bucketName,
+               bucket_region    AS bucketRegion,
+               prefix_path      AS prefixPath,
+               public_url       AS publicUrl,
+               remark
+        FROM bedrock_oss_config
+        WHERE id = #{id}
+    </select>
+    <select id="selectDetailByCode" resultType="org.bedrock.resource.vo.OssConfigDetailVO">
+        SELECT id,
+        config_code AS configCode,
+        service_provider AS serviceProvider,
+        endpoint,
+        access_key AS accessKey,
+        secret_key AS secretKey,
+        bucket_name AS bucketName,
+        bucket_region AS bucketRegion,
+        prefix_path AS prefixPath,
+        public_url AS publicUrl
+        FROM bedrock_oss_config
+        <where>
+            is_deleted = 0
+            <choose>
+                <when test="configCode != null and configCode != ''">
+                    and config_code = #{configCode}
+                </when>
+                <otherwise>
+                    and status = 1
+                </otherwise>
+            </choose>
+        </where>
+        limit 1
+    </select>
+    <select id="selectOssConfigList" resultType="org.bedrock.resource.vo.OssConfigListVO">
+        SELECT id,
+        config_name AS configName,
+        config_code AS configCode,
+        service_provider AS serviceProvider,
+        endpoint,
+        bucket_name AS bucketName,
+        bucket_region AS bucketRegion,
+        prefix_path AS prefixPath,
+        public_url AS publicUrl,
+        status,
+        remark
+        FROM bedrock_oss_config
+        WHERE is_deleted = 0
+        <if test="param.configName != null and param.configName != ''">
+            and config_name like concat('%', #{param.configName}, '%')
+        </if>
+        <if test="param.configCode != null and param.configCode != ''">
+            and config_code like concat('%', #{param.configCode}, '%')
+        </if>
+        <if test="param.serviceProvider != null">
+            and service_provider = #{param.serviceProvider}
+        </if>
+    </select>
+</mapper>

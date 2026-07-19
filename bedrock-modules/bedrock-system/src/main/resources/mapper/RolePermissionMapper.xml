@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.bedrock.system.mapper.RolePermissionMapper">
+    <insert id="insertBatch">
+        insert into bedrock_role_permission (id, perm_type, role_id, permission_id) values
+        <foreach collection="list" item="item" separator=",">
+            (#{item.id}, #{item.permType}, #{item.roleId}, #{item.permissionId})
+        </foreach>
+    </insert>
+    <select id="selectPermissionIdsByRoleId" resultType="java.lang.String">
+        select permission_id
+        from bedrock_role_permission
+        where role_id = #{param.roleId}
+          and perm_type = #{param.permType}
+    </select>
+</mapper>

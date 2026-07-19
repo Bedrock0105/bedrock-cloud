@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.bedrock.system.mapper.MenuMapper">
+    <select id="selectDetail" resultType="org.bedrock.system.vo.MenuDetailVO">
+        select id,
+               menu_name,
+               menu_code,
+               parent_id,
+               ancestors,
+               menu_type,
+               menu_icon,
+               sort,
+               route_path,
+               component_path,
+               external_url,
+               active_path,
+               is_cache,
+               is_hide_tab,
+               is_hide,
+               is_affix,
+               is_full_screen,
+               is_show_badge,
+               show_text_badge,
+               status,
+               remark,
+               if(parent_id = 0, '顶级',
+                  (select bdp.menu_name from bedrock_menu bdp where bdp.id = bedrock_menu.parent_id)) as parentName
+        from bedrock_menu
+        where id = #{id}
+    </select>
+    <select id="selectMenuList" resultType="org.bedrock.system.vo.MenuTreeVO">
+        select id,
+        menu_name,
+        menu_code,
+        parent_id,
+        ancestors,
+        menu_type,
+        menu_icon,
+        sort,
+        route_path,
+        component_path,
+        external_url,
+        active_path,
+        is_cache,
+        is_hide_tab,
+        is_hide,
+        is_iframe,
+        is_affix,
+        is_full_screen,
+        is_show_badge,
+        show_text_badge,
+        status,
+        update_time
+        <if test="menu.parentId != null">
+            ,
+            (exists(select 1 from bedrock_menu bdh where bdh.parent_id = bedrock_menu.id)) as hasChildren
+        </if>
+        from bedrock_menu
+        where is_deleted = 0
+        <if test="menu.menuName != null and menu.menuName != ''">
+            and menu_name like concat('%',#{menu.menuName},'%')
+        </if>
+        <if test="menu.menuCode != null and menu.menuCode != ''">
+            and menu_code like concat('%',#{menu.menuCode},'%')
+        </if>
+        <if test="menu.parentId != null">
+            and parent_id = #{menu.parentId}
+        </if>
+        <if test="menu.routePath != null">
+            and route_path like concat('%',#{menu.routePath},'%')
+        </if>
+        order by sort
+    </select>
+    <select id="selectMenuByRoleIds" resultType="org.bedrock.system.vo.MenuTreeVO">
+        select bm.id,
+        bm.menu_name,
+        bm.menu_code,
+        bm.parent_id,
+        bm.ancestors,
+        bm.menu_type,
+        bm.menu_icon,
+        bm.sort,
+        bm.route_path,
+        bm.active_path,
+        bm.component_path,
+        bm.external_url,
+        bm.is_cache,
+        bm.is_hide_tab,
+        bm.is_hide,
+        bm.is_affix,
+        bm.is_iframe,
+        bm.is_iframe,
+        bm.is_full_screen,
+        bm.is_show_badge,
+        bm.show_text_badge,
+        bm.status,
+        bm.update_time
+        from bedrock_menu bm
+        <if test="roleIds != null and roleIds.size() > 0">
+            inner join bedrock_role_menu brm on brm.menu_id = bm.id
+        </if>
+        where bm.is_deleted = 0
+        and bm.status = 1
+        <if test="roleIds != null and roleIds.size() > 0">
+            and brm.role_id in (
+            <foreach collection="roleIds" separator="," item="item">
+                #{item}
+            </foreach>
+            )
+        </if>
+    </select>
+</mapper>

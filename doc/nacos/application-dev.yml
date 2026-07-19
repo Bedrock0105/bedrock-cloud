@@ -1,0 +1,36 @@
+#激活Sentinel 对Feign的支持
+feign:
+  sentinel:
+    enabled: true
+  okhttp:
+    enabled: true
+  httpclient:
+    enabled: false
+#数据源配置
+spring:
+  cloud:
+    sentinel:
+      eager: true
+  datasource:
+    url: jdbc:mysql://127.0.0.1:3306/bedrock?useSSL=false&useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&transformedBitIsBoolean=true&tinyInt1isBit=false&allowMultiQueries=true&serverTimezone=GMT%2B8&allowPublicKeyRetrieval=true
+    username: root
+    password: root
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  data:
+    redis:
+      ##redis 单机环境配置
+      host: 127.0.0.1
+      port: 6379
+      password: 123456
+      database: 0
+      ssl:
+        enabled: false
+bedrock:
+  security:
+    ignore-urls:
+      - /v3/api-docs
+      - /oauth/token
+      - /oss/upload-file
+  mybatis-plus:
+    ignore-table:
+      - bedrock_admin_online

@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.bedrock.ai.mapper.AiChatRecordMapper">
+
+    <resultMap id="AiChatRecordDetailVOMap" type="org.bedrock.ai.vo.AiChatRecordDetailVO">
+        <id column="id" property="id"/>
+        <result column="modelId" property="modelId"/>
+        <result column="modelName" property="modelName"/>
+        <result column="model" property="model"/>
+        <result column="user_id" property="userId"/>
+        <result column="roleId" property="roleId"/>
+        <result column="chat_type" property="chatType"/>
+        <result column="roleName" property="roleName"/>
+        <result column="roleAvatar" property="roleAvatar"/>
+        <result column="title" property="title"/>
+        <result column="systemPrompt" property="systemPrompt"/>
+        <result column="isTop" property="isTop"/>
+        <result column="chat_options" property="chatOptions"
+                typeHandler="com.baomidou.mybatisplus.extension.handlers.JacksonTypeHandler"/>
+    </resultMap>
+
+    <resultMap id="AiChatRecordAdminDetailVOMap" type="org.bedrock.ai.vo.AiChatRecordAdminDetailVO">
+        <id column="id" property="id"/>
+        <result column="modelId" property="modelId"/>
+        <result column="modelName" property="modelName"/>
+        <result column="model" property="model"/>
+        <result column="user_id" property="userId"/>
+        <result column="nickname" property="nickname"/>
+        <result column="roleId" property="roleId"/>
+        <result column="roleName" property="roleName"/>
+        <result column="roleAvatar" property="roleAvatar"/>
+        <result column="title" property="title"/>
+        <result column="chatType" property="chatType"/>
+        <result column="systemPrompt" property="systemPrompt"/>
+        <result column="isTop" property="isTop"/>
+        <result column="chat_options" property="chatOptions"
+                typeHandler="com.baomidou.mybatisplus.extension.handlers.JacksonTypeHandler"/>
+        <result column="totalPromptTokens" property="totalPromptTokens"/>
+        <result column="totalCompletionTokens" property="totalCompletionTokens"/>
+        <result column="totalTokens" property="totalTokens"/>
+        <result column="createTime" property="createTime"/>
+        <result column="updateTime" property="updateTime"/>
+    </resultMap>
+
+    <update id="updateTokenUsageById">
+        UPDATE bedrock_ai_chat_record
+        SET total_prompt_tokens     = total_prompt_tokens + #{promptTokens},
+            total_completion_tokens = total_completion_tokens + #{completionTokens},
+            total_tokens            = total_tokens + #{totalTokens},
+            update_time             = #{updateTime}
+        WHERE id = #{recordId}
+          AND is_deleted = 0
+    </update>
+
+    <select id="selectDetailById" resultMap="AiChatRecordDetailVOMap">
+        SELECT r.id,
+               r.model_id      AS modelId,
+               m.model_name    AS modelName,
+               m.model,
+               r.user_id,
+               r.role_id       AS roleId,
+               ar.role_name    AS roleName,
+               ar.role_avatar  AS roleAvatar,
+               r.title,
+               r.system_prompt AS systemPrompt,
+               r.is_top        AS isTop,
+               r.chat_type,
+               r.chat_options
+        FROM bedrock_ai_chat_record r
+                 LEFT JOIN bedrock_ai_model m ON r.model_id = m.id AND m.is_deleted = 0
+                 LEFT JOIN bedrock_ai_role ar ON r.role_id = ar.id AND ar.is_deleted = 0
+        WHERE r.id = #{id}
+          AND r.is_deleted = 0
+    </select>
+
+    <select id="selectAdminDetailById" resultMap="AiChatRecordAdminDetailVOMap">
+        SELECT r.id,
+               r.model_id                AS modelId,
+               m.model_name              AS modelName,
+               m.model,
+               r.user_id,
+               COALESCE(ba.nickname, ba.username) AS nickname,
+               r.role_id                 AS roleId,
+               ar.role_name              AS roleName,
+               ar.role_avatar            AS roleAvatar,
+               r.title,
+               r.chat_type    AS chatType,
+               r.system_prompt           AS systemPrompt,
+               r.is_top                  AS isTop,
+               r.chat_options,
+               r.total_prompt_tokens     AS totalPromptTokens,
+               r.total_completion_tokens AS totalCompletionTokens,
+               r.total_tokens            AS totalTokens,
+               r.create_time             AS createTime,
+               r.update_time             AS updateTime
+        FROM bedrock_ai_chat_record r
+                 LEFT JOIN bedrock_ai_model m ON r.model_id = m.id AND m.is_deleted = 0
+                 LEFT JOIN bedrock_ai_role ar ON r.role_id = ar.id AND ar.is_deleted = 0
+                 LEFT JOIN bedrock_admin ba ON r.user_id = ba.id AND ba.is_deleted = 0
+        WHERE r.id = #{id}
+          AND r.is_deleted = 0
+    </select>
+
+    <select id="selectChatRecordList" resultType="org.bedrock.ai.vo.AiChatRecordListVO">
+        SELECT r.id,
+               r.model_id     AS modelId,
+               m.model_name   AS modelName,
+               r.role_id      AS roleId,
+               ar.role_name   AS roleName,
+               ar.role_avatar AS roleAvatar,
+               r.title,
+               r.chat_type    AS chatType,
+               r.is_top       AS isTop,
+               r.update_time  AS updateTime
+        FROM bedrock_ai_chat_record r
+                 LEFT JOIN bedrock_ai_model m ON r.model_id = m.id AND m.is_deleted = 0
+                 LEFT JOIN bedrock_ai_role ar ON r.role_id = ar.id AND ar.is_deleted = 0
+        WHERE r.is_deleted = 0
+          AND r.user_id = #{userId}
+          AND r.chat_type = #{chatType}
+        ORDER BY r.is_top DESC, r.update_time DESC
+    </select>
+
+    <!-- 管理端：租户内全员会话分页 -->
+    <select id="selectAdminChatRecordListPage" resultType="org.bedrock.ai.vo.AiChatRecordAdminListVO">
+        SELECT r.id,
+               r.user_id      AS userId,
+               COALESCE(ba.nickname, ba.username) AS nickname,
+               r.model_id     AS modelId,
+               m.model_name   AS modelName,
+               r.role_id      AS roleId,
+               ar.role_name   AS roleName,
+               ar.role_avatar AS roleAvatar,
+               r.title,
+               r.chat_type    AS chatType,
+               r.is_top       AS isTop,
+               r.total_tokens AS totalTokens,
+               r.create_time  AS createTime,
+               r.update_time  AS updateTime
+        FROM bedrock_ai_chat_record r
+                 LEFT JOIN bedrock_ai_model m ON r.model_id = m.id AND m.is_deleted = 0
+                 LEFT JOIN bedrock_ai_role ar ON r.role_id = ar.id AND ar.is_deleted = 0
+                 LEFT JOIN bedrock_admin ba ON r.user_id = ba.id AND ba.is_deleted = 0
+        WHERE r.is_deleted = 0
+        <if test="param.title != null and param.title != ''">
+            AND r.title LIKE concat('%', #{param.title}, '%')
+        </if>
+        <if test="param.userId != null">
+            AND r.user_id = #{param.userId}
+        </if>
+        <if test="param.nickname != null and param.nickname != ''">
+            AND (ba.nickname LIKE concat('%', #{param.nickname}, '%')
+              OR ba.username LIKE concat('%', #{param.nickname}, '%'))
+        </if>
+        <if test="param.modelId != null">
+            AND r.model_id = #{param.modelId}
+        </if>
+        <if test="param.chatType != null">
+            AND r.chat_type = #{param.chatType}
+        </if>
+        <if test="param.startTime != null and param.startTime != ''">
+            AND r.update_time &gt;= #{param.startTime}
+        </if>
+        <if test="param.endTime != null and param.endTime != ''">
+            AND r.update_time &lt;= #{param.endTime}
+        </if>
+        ORDER BY r.update_time DESC
+    </select>
+</mapper>

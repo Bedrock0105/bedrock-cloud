@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="Encoding">
+    <file url="file://$PROJECT_DIR$/bedrock-api/bedrock-ai-api/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/bedrock-api/bedrock-ai-api/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/bedrock-api/bedrock-log-api/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/bedrock-api/bedrock-log-api/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/bedrock-api/bedrock-resource-api/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/bedrock-api/bedrock-resource-api/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/bedrock-api/bedrock-system-api/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/bedrock-api/bedrock-system-api/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/bedrock-api/bedrock-websocket-api/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/bedrock-api/bedrock-websocket-api/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/bedrock-api/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/bedrock-api/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/bedrock-auth/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/bedrock-auth/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/bedrock-common/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/bedrock-common/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/bedrock-gateway/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/bedrock-gateway/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/bedrock-modules/bedrock-ai/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/bedrock-modules/bedrock-ai/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/bedrock-modules/bedrock-log/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/bedrock-modules/bedrock-log/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/bedrock-modules/bedrock-resource/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/bedrock-modules/bedrock-resource/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/bedrock-modules/bedrock-system/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/bedrock-modules/bedrock-system/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/bedrock-modules/bedrock-websocket/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/bedrock-modules/bedrock-websocket/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/bedrock-modules/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/bedrock-modules/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/resources" charset="UTF-8" />
+  </component>
+</project>

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.bedrock.ai.mapper.AiChatMessageMapper">
+
+    <resultMap id="AiChatMessageListVOMap" type="org.bedrock.ai.vo.AiChatMessageListVO">
+        <id column="id" property="id"/>
+        <result column="record_id" property="recordId"/>
+        <result column="role" property="role"/>
+        <result column="content" property="content"/>
+        <result column="reasoning" property="reasoning"/>
+        <result column="create_time" property="createTime"/>
+        <result column="attachments" property="attachments"
+                typeHandler="com.baomidou.mybatisplus.extension.handlers.JacksonTypeHandler"/>
+    </resultMap>
+
+    <select id="selectMessageListByRecordId" resultMap="AiChatMessageListVOMap">
+        SELECT m.id,
+               m.record_id,
+               m.role,
+               m.content,
+               m.reasoning,
+               m.attachments,
+               m.create_time
+        FROM bedrock_ai_chat_message m
+        WHERE m.record_id = #{recordId}
+          AND m.is_deleted = 0
+          and m.role in ('assistant', 'user')
+          AND NOT (m.role = 'assistant'
+            AND (m.content IS NULL)
+            AND (m.reasoning IS NULL)
+            AND (m.tool_calls IS NULL))
+    </select>
+
+    <resultMap id="AiChatMessageHistoryMap" type="org.bedrock.ai.entity.AiChatMessage">
+        <result column="record_id" property="recordId"/>
+        <result column="parent_id" property="parentId"/>
+        <result column="role" property="role"/>
+        <result column="content" property="content"/>
+        <result column="reasoning" property="reasoning"/>
+        <result column="tool_calls" property="toolCalls"/>
+        <result column="attachments" property="attachments"
+                typeHandler="com.baomidou.mybatisplus.extension.handlers.JacksonTypeHandler"/>
+    </resultMap>
+
+    <select id="selectHistoryMessages" resultMap="AiChatMessageHistoryMap">
+        SELECT
+               m.record_id,
+               m.parent_id,
+               m.role,
+               m.content,
+               m.reasoning,
+               m.tool_calls,
+               m.attachments
+        FROM bedrock_ai_chat_message m
+        WHERE m.record_id = #{recordId}
+          AND m.is_deleted = 0
+          AND NOT (m.role = 'assistant'
+            AND (m.content IS NULL)
+            AND (m.reasoning IS NULL)
+            AND (m.tool_calls IS NULL))
+        ORDER BY m.id DESC
+        LIMIT #{maxMessages}
+    </select>
+</mapper>

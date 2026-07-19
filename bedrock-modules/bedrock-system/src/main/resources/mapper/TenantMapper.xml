@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.bedrock.system.mapper.TenantMapper">
+    <select id="selectDetailById" resultType="org.bedrock.system.vo.TenantDetailVO">
+        select bt.id,
+               bt.tenant_id,
+               bt.username,
+               bt.tenant_name,
+               bt.tenant_short_name,
+               bt.tenant_logo,
+               bt.industry,
+               bt.status,
+               bt.business_desc,
+               bt.contact_person,
+               bt.contact_phone,
+               bt.contact_email,
+               bt.contact_address,
+               bt.package_id,
+               (select btp.name from bedrock_tenant_package btp where btp.id = bt.package_id) as package_name,
+               bt.db_instance_id,
+               bt.tenant_domain,
+               bt.max_user_num,
+               bt.expire_time,
+               bt.remark,
+               bt.ext_config
+        from bedrock_tenant bt
+        where bt.id = #{id}
+    </select>
+    <select id="selectDetailByTenantId" resultType="org.bedrock.system.vo.TenantDetailVO">
+        select bt.id,
+               bt.tenant_id,
+               bt.username,
+               bt.tenant_name,
+               bt.tenant_short_name,
+               bt.tenant_logo,
+               bt.industry,
+               bt.status,
+               bt.business_desc,
+               bt.contact_person,
+               bt.contact_phone,
+               bt.contact_email,
+               bt.contact_address,
+               bt.package_id,
+               (select btp.name from bedrock_tenant_package btp where btp.id = bt.package_id) as package_name,
+               bt.db_instance_id,
+               bt.tenant_domain,
+               bt.max_user_num,
+               bt.expire_time,
+               bt.remark,
+               bt.ext_config
+        from bedrock_tenant bt
+        where bt.tenant_id = #{tenantId}
+    </select>
+    <select id="selectListTenantList" resultType="org.bedrock.system.vo.TenantListVO">
+        select
+        bt.id,
+        bt.tenant_id,
+        bt.username,
+        bt.tenant_name,
+        bt.tenant_short_name,
+        bt.tenant_logo,
+        bt.industry,
+        bt.contact_person,
+        bt.contact_phone,
+        bt.contact_email,
+        bt.expire_time,
+        bt.status
+        from bedrock_tenant bt
+        where bt.is_deleted = 0
+        <if test="param.tenantId !=null and param.tenantId != ''">
+            and bt.tenant_id = #{param.tenantId}
+        </if>
+        <if test="param.status !=null">
+            and bt.status = #{param.status}
+        </if>
+        <if test="param.contactEmail !=null and param.contactEmail != ''">
+            and bt.contact_email = #{param.contactEmail}
+        </if>
+        <if test="param.contactPerson !=null and param.contactPerson != ''">
+            and bt.contact_person like concat('%',#{param.contactPerson},'%')
+        </if>
+        <if test="param.contactPhone !=null and param.contactPhone != ''">
+            and bt.contact_phone like concat('%',#{param.contactPhone},'%')
+        </if>
+        <if test="param.tenantName !=null and param.tenantName != ''">
+            and bt.tenant_name like concat('%',#{param.tenantName},'%')
+        </if>
+    </select>
+</mapper>

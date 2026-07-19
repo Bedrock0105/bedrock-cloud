@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>org.bedrock</groupId>
+        <artifactId>bedrock-cloud</artifactId>
+        <version>${revision}</version>
+    </parent>
+
+    <artifactId>bedrock-api</artifactId>
+    <packaging>pom</packaging>
+    <modules>
+        <module>bedrock-system-api</module>
+        <module>bedrock-resource-api</module>
+        <module>bedrock-log-api</module>
+        <module>bedrock-websocket-api</module>
+        <module>bedrock-ai-api</module>
+    </modules>
+    <dependencies>
+        <!-- swagger -->
+        <dependency>
+            <groupId>io.swagger.core.v3</groupId>
+            <artifactId>swagger-annotations-jakarta</artifactId>
+        </dependency>
+        <!-- feign -->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-openfeign</artifactId>
+        </dependency>
+        <!--tenant-->
+        <dependency>
+            <groupId>org.bedrock</groupId>
+            <artifactId>bedrock-common-tenant</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.bedrock</groupId>
+            <artifactId>bedrock-common</artifactId>
+        </dependency>
+    </dependencies>
+    <build>
+        <finalName>${project.artifactId}</finalName>
+    </build>
+</project>

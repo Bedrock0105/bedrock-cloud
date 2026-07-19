@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.bedrock.resource.mapper.EmailConfigMapper">
+    <!-- 根据ID查询详情 -->
+    <select id="selectDetailById" resultType="org.bedrock.resource.vo.EmailConfigDetailVO">
+        SELECT id,
+               config_name      AS configName,
+               config_code      AS configCode,
+               service_provider AS serviceProvider,
+               protocol,
+               smtp_server      AS smtpServer,
+               smtp_port        AS smtpPort,
+               ency_type        AS encyType,
+               account_auth     AS accountAuth,
+               username,
+               password,
+               remark
+        FROM bedrock_email_config
+        WHERE id = #{id}
+    </select>
+    <!-- 根据编码查询详情，编码为空时查询启用配置 -->
+    <select id="selectDetailByCode" resultType="org.bedrock.resource.vo.EmailConfigDetailVO">
+        SELECT id,
+        config_code AS configCode,
+        service_provider AS serviceProvider,
+        protocol,
+        smtp_server AS smtpServer,
+        smtp_port AS smtpPort,
+        ency_type AS encyType,
+        account_auth AS accountAuth,
+        username,
+        password
+        FROM bedrock_email_config
+        <where>
+            is_deleted = 0
+            <choose>
+                <when test="configCode != null and configCode != ''">
+                    and config_code = #{configCode}
+                </when>
+                <otherwise>
+                    and status = 1
+                </otherwise>
+            </choose>
+        </where>
+        limit 1
+    </select>
+    <!-- 查询列表 -->
+    <select id="selectEmailConfigList" resultType="org.bedrock.resource.vo.EmailConfigListVO">
+        SELECT id,
+        config_name AS configName,
+        config_code AS configCode,
+        service_provider AS serviceProvider,
+        smtp_server AS smtpServer,
+        smtp_port AS smtpPort,
+        username,
+        status,
+        remark
+        FROM bedrock_email_config
+        WHERE is_deleted = 0
+        <if test="param.configName != null and param.configName != ''">
+            and config_name like concat('%', #{param.configName}, '%')
+        </if>
+        <if test="param.configCode != null and param.configCode != ''">
+            and config_code like concat('%', #{param.configCode}, '%')
+        </if>
+        <if test="param.serviceProvider != null">
+            and service_provider = #{param.serviceProvider}
+        </if>
+    </select>
+</mapper>

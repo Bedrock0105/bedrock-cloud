@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.bedrock.ai.mapper.AiApiKeyMapper">
+    <!-- 根据ID查询详情 -->
+    <select id="selectDetailById" resultType="org.bedrock.ai.vo.AiApiKeyDetailVO">
+        SELECT id,
+               key_name AS keyName,
+               api_key  AS apiKey,
+               platform,
+               base_url AS baseUrl,
+               api_path AS apiPath,
+               remark
+        FROM bedrock_ai_api_key
+        WHERE id = #{id}
+          AND is_deleted = 0
+    </select>
+    <!-- 查询列表 -->
+    <select id="selectAiApiKeyList" resultType="org.bedrock.ai.vo.AiApiKeyListVO">
+        SELECT id,
+               key_name AS keyName,
+               platform,
+               base_url AS baseUrl,
+               api_path AS apiPath,
+               status,
+               remark
+        FROM bedrock_ai_api_key
+        WHERE is_deleted = 0
+        <if test="param.keyName != null and param.keyName != ''">
+            AND key_name LIKE concat('%', #{param.keyName}, '%')
+        </if>
+        <if test="param.platform != null">
+            AND platform = #{param.platform}
+        </if>
+        <if test="param.status != null">
+            AND status = #{param.status}
+        </if>
+        ORDER BY create_time DESC
+    </select>
+</mapper>

@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.bedrock.ai.mapper.AiTokenUsageMapper">
+
+    <sql id="Base_Column_List">
+        id,
+        record_id              AS recordId,
+        user_id                AS userId,
+        model_id               AS modelId,
+        model,
+        api_key_id             AS apiKeyId,
+        api_key_name           AS apiKeyName,
+        platform,
+        stream,
+        prompt_tokens          AS promptTokens,
+        completion_tokens      AS completionTokens,
+        total_tokens           AS totalTokens,
+        usage_source           AS usageSource,
+        total_latency_ms       AS totalLatencyMs,
+        create_time            AS createTime
+    </sql>
+
+    <sql id="List_Where">
+        WHERE is_deleted = 0
+        <if test="param.model != null and param.model != ''">
+            AND model LIKE concat('%', #{param.model}, '%')
+        </if>
+        <if test="param.apiKeyName != null and param.apiKeyName != ''">
+            AND api_key_name LIKE concat('%', #{param.apiKeyName}, '%')
+        </if>
+        <if test="param.platform != null">
+            AND platform = #{param.platform}
+        </if>
+        <if test="param.usageSource != null">
+            AND usage_source = #{param.usageSource}
+        </if>
+        <if test="param.startTime != null and param.startTime != ''">
+            AND create_time &gt;= #{param.startTime}
+        </if>
+        <if test="param.endTime != null and param.endTime != ''">
+            AND create_time &lt;= #{param.endTime}
+        </if>
+    </sql>
+
+    <select id="selectDetailById" resultType="org.bedrock.ai.vo.AiTokenUsageDetailVO">
+        SELECT
+        <include refid="Base_Column_List"/>,
+        user_message_id        AS userMessageId,
+        assistant_message_id   AS assistantMessageId,
+        first_token_latency_ms AS firstTokenLatencyMs,
+        streaming_duration_ms  AS streamingDurationMs,
+        tokens_per_second      AS tokensPerSecond,
+        started_at             AS startedAt,
+        completed_at           AS completedAt
+        FROM bedrock_ai_token_usage
+        WHERE id = #{id}
+          AND is_deleted = 0
+    </select>
+
+    <select id="selectTokenUsageList" resultType="org.bedrock.ai.vo.AiTokenUsageListVO">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM bedrock_ai_token_usage
+        <include refid="List_Where"/>
+        ORDER BY create_time DESC
+    </select>
+
+    <select id="selectTotalCalls" resultType="java.lang.Long">
+        SELECT COUNT(1) FROM bedrock_ai_token_usage WHERE is_deleted = 0
+    </select>
+
+    <select id="selectTotalTokens" resultType="java.lang.Long">
+        SELECT IFNULL(SUM(total_tokens), 0) FROM bedrock_ai_token_usage WHERE is_deleted = 0
+    </select>
+
+    <select id="selectTotalPromptTokens" resultType="java.lang.Long">
+        SELECT IFNULL(SUM(prompt_tokens), 0) FROM bedrock_ai_token_usage WHERE is_deleted = 0
+    </select>
+
+    <select id="selectTotalCompletionTokens" resultType="java.lang.Long">
+        SELECT IFNULL(SUM(completion_tokens), 0) FROM bedrock_ai_token_usage WHERE is_deleted = 0
+    </select>
+
+    <select id="selectTodayCalls" resultType="java.lang.Long">
+        SELECT COUNT(1)
+        FROM bedrock_ai_token_usage
+        WHERE is_deleted = 0
+          AND DATE(create_time) = CURDATE()
+    </select>
+
+    <select id="selectTodayTokens" resultType="java.lang.Long">
+        SELECT IFNULL(SUM(total_tokens), 0)
+        FROM bedrock_ai_token_usage
+        WHERE is_deleted = 0
+          AND DATE(create_time) = CURDATE()
+    </select>
+
+    <select id="selectModelStats" resultType="org.bedrock.ai.vo.AiTokenUsageModelStatsVO">
+        SELECT model,
+               COUNT(1)                     AS callCount,
+               IFNULL(SUM(total_tokens), 0) AS totalTokens
+        FROM bedrock_ai_token_usage
+        WHERE is_deleted = 0
+        GROUP BY model_id, model
+        ORDER BY callCount DESC
+        LIMIT 10
+    </select>
+
+    <select id="selectRecentTrends" resultType="org.bedrock.ai.vo.AiTokenUsageTrendVO">
+        SELECT DATE_FORMAT(create_time, '%Y-%m-%d') AS statDate,
+               COUNT(1)                             AS callCount,
+               IFNULL(SUM(total_tokens), 0)         AS totalTokens
+        FROM bedrock_ai_token_usage
+        WHERE is_deleted = 0
+          AND create_time &gt;= DATE_SUB(CURDATE(), INTERVAL #{days} - 1 DAY)
+        GROUP BY DATE(create_time)
+        ORDER BY statDate ASC
+    </select>
+
+</mapper>

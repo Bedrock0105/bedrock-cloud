@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>org.bedrock</groupId>
+        <artifactId>bedrock-cloud</artifactId>
+        <version>${revision}</version>
+    </parent>
+
+    <artifactId>bedrock-common</artifactId>
+    <packaging>jar</packaging>
+    <dependencies>
+        <!-- MySql -->
+        <dependency>
+            <groupId>com.mysql</groupId>
+            <artifactId>mysql-connector-j</artifactId>
+        </dependency>
+        <!--序列化-->
+        <dependency>
+            <groupId>io.protostuff</groupId>
+            <artifactId>protostuff-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.protostuff</groupId>
+            <artifactId>protostuff-runtime</artifactId>
+        </dependency>
+        <!--生产加载文件-->
+        <dependency>
+            <groupId>org.bedrock</groupId>
+            <artifactId>bedrock-common-code</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.bedrock</groupId>
+            <artifactId>bedrock-common-spi</artifactId>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
+    <build>
+        <finalName>${project.artifactId}</finalName>
+    </build>
+</project>

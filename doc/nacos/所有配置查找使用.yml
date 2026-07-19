@@ -1,0 +1,215 @@
+# ============================================================
+# Bedrock Cloud 开发环境 Nacos 共享配置
+# 对应 commons 模块内置默认值，在此统一覆盖便于修改
+# ============================================================
+
+# ---------- Feign / Sentinel ----------
+feign:
+  sentinel:
+    enabled: true
+  okhttp:
+    enabled: true
+  httpclient:
+    enabled: false
+
+spring:
+  cloud:
+    sentinel:
+      eager: true
+
+  # ---------- 文件上传（boot.yml 默认） ----------
+  servlet:
+    multipart:
+      max-file-size: 2048MB
+      max-request-size: 2048MB
+
+  # ---------- 数据源（环境相关，按实际修改） ----------
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    url: jdbc:mysql://127.0.0.1:3306/bedrock?useSSL=false&useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&transformedBitIsBoolean=true&tinyInt1isBit=false&allowMultiQueries=true&serverTimezone=GMT%2B8&allowPublicKeyRetrieval=true
+    username: root
+    password: root
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  # ---------- Redis（环境相关，按实际修改） ----------
+  data:
+    redis:
+      host: 127.0.0.1
+      port: 6379
+      password: 123456
+      database: 1
+      ssl:
+        enabled: false
+# undertow 配置
+server:
+  # 与 undertow 上限对齐，避免「容器过了、Spring multipart 又拦」
+  undertow:
+    # HTTP POST/PUT 整包上限（Undertow MAX_ENTITY_SIZE）——上传必须够大
+    max-http-post-size: 2048MB
+    # 缓冲：16KB + 直接内存，大文件吞吐更好
+    buffer-size: 16KB
+    direct-buffers: true
+    threads:
+      # IO 线程 ≈ CPU 核数（8 核就写 8，不要盲目加大）
+      io: 8
+      # 业务工作线程：上传/阻塞 IO 可略高，一般 200~400
+      worker: 256
+    # 最大连接数，按机器内存与并发估
+    max-connections: 10000
+    # 大文件上传期间连接空闲超时，过短会中途断开（单位随 Boot 版本：时长写法）
+    no-request-timeout: 10m
+
+# ---------- MyBatis-Plus（mybatis-plus.yml 默认） ----------
+mybatis-plus:
+  mapper-locations: classpath:/mapper/*Mapper.xml
+  type-aliases-package: org.bedrock.**.entity
+  global-config:
+    banner: false
+    db-config:
+      id-type: assign_id
+      insert-strategy: not_null
+      update-strategy: not_null
+      where-strategy: not_null
+      table-underline: true
+      logic-delete-field: is_deleted
+      logic-delete-value: 1
+      logic-not-delete-value: 0
+  configuration:
+    map-underscore-to-camel-case: true
+    cache-enabled: false
+    jdbc-type-for-null: 'null'
+
+# ---------- SpringDoc / Knife4j（swagger.yml 默认） ----------
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+    tags-sorter: order
+    operations-sorter: order
+  api-docs:
+    path: /v3/api-docs
+  default-flat-param-object: true
+
+knife4j:
+  enable: true
+  production: false
+  setting:
+    language: zh_cn
+
+# ============================================================
+# Bedrock 框架配置（bedrock.* 前缀）
+# ============================================================
+bedrock:
+  # ---------- 请求上下文 / Feign 头转发（boot 模块） ----------
+  content:
+    tenant-id: X-Tenant-Id
+    account-id: X-User-Account-Id
+    # Feign 调用时需要转发的请求头，生产环境务必配置 Token 和租户
+    headers:
+      - Authorization
+      - X-Tenant-Id
+      - X-User-Account-Id
+
+  # ---------- JWT 认证（auth 模块，生产环境务必修改 secret-key） ----------
+  authentication:
+    secret-key: MIHwMIGoBgcqhkjOOsdsAQBMIGcAkEAKaCzo4Syrom78z3EQ5SbbB4sF7ey80etKII
+    jwt-iss: github
+    jwt-subject: github.com
+
+  # ---------- 登录拦截 + 接口权限（security 模块） ----------
+  security:
+    enabled: false
+    ignore-urls:
+      - /doc.html
+      - /webjars/**
+      - /v3/api-docs/**
+      - /v3/api-docs
+      - /oauth/**
+
+  # ---------- 多租户（tenant 模块） ----------
+  tenant:
+    enabled: true
+    tenant-column: tenant_id
+    excludes: []
+
+  # ---------- 数据权限（datascope 模块） ----------
+  datascope:
+    enabled: true
+
+  # ---------- MyBatis-Plus 增强（mybatisplus 模块） ----------
+  mybatis-plus:
+    sql-log: true
+    sql-log-color: true
+    ignore-table:
+      - bedrock_admin_online
+    overflow: false
+    max-limit: 1000
+    optimize-join: false
+
+  # ---------- 请求日志（log 模块） ----------
+  log:
+    request:
+      enabled: true
+      level: INFO
+      max-length: 2147483647
+      exclude: []
+      excluded-handlers: []
+      handlers-log: true
+      method-params-log: true
+      method-return-log: true
+      method-return-msg-log: true
+
+  # ---------- Redis 序列化 / Stream（redis 模块） ----------
+  redis:
+    serializer: PROTOSTUFF
+    stream:
+      enabled: false
+      batch-size: 10
+      seconds-poll-timeout: 5
+      core-pool-size: 10
+      max-pool-size: 100
+      queue-capacity: 1000
+      thread-name-prefix: redisListenerStreamExecutor-
+      keep-alive-seconds: 30
+
+  # ---------- Swagger 文档（swagger 模块） ----------
+  swagger:
+    enabled: true
+    packages-to-scan: org.bedrock
+    paths-to-match:
+      - "/**"
+    paths-to-exclude: []
+    packages-to-exclude: []
+    info:
+      title: "接口文档"
+      description: "接口文档"
+      termsOfService: "http://xxxx"
+      version: @revision@
+      contact:
+        name: "xxxx"
+        url: "http://xxxx"
+        email: "xxxx"
+      license:
+        name: "xxxx"
+        url: "http://xxxx"
+
+  # ---------- 事件总线（code 模块，默认关闭） ----------
+  eventbus:
+    enabled: false
+    type: LOCAL
+    global-topic: bedrock:eventbus:channel
+
+  # ---------- HTTP 客户端（http 模块，调用第三方 API 时使用） ----------
+  http:
+    client:
+      http-executor-name: okhttp
+      connect-timeout: 5000
+      read-timeout: 15000
+      write-timeout: 8000
+      protocol-version: HTTP_1_1
+      log:
+        enabled: true
+        request-log: true
+        request-header-log: true
+        request-body-log: false
+        response-log: true
+        response-header-log: true
+        response-body-log: false

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.bedrock.ai.mapper.AiRoleMapper">
+
+    <resultMap id="AiRoleDetailVOMap" type="org.bedrock.ai.vo.AiRoleDetailVO">
+        <id column="id" property="id"/>
+        <result column="roleName" property="roleName"/>
+        <result column="roleAvatar" property="roleAvatar"/>
+        <result column="remark" property="remark"/>
+        <result column="systemPrompt" property="systemPrompt"/>
+        <result column="modelId" property="modelId"/>
+        <result column="modelName" property="modelName"/>
+        <result column="chat_options" property="chatOptions"
+                typeHandler="com.baomidou.mybatisplus.extension.handlers.JacksonTypeHandler"/>
+    </resultMap>
+
+    <select id="selectDetailById" resultMap="AiRoleDetailVOMap">
+        SELECT r.id,
+               r.role_name     AS roleName,
+               r.role_avatar   AS roleAvatar,
+               r.remark,
+               r.system_prompt AS systemPrompt,
+               r.model_id      AS modelId,
+               m.model_name    AS modelName,
+               r.chat_options
+        FROM bedrock_ai_role r
+                 LEFT JOIN bedrock_ai_model m ON r.model_id = m.id AND m.is_deleted = 0
+        WHERE r.id = #{id}
+          AND r.is_deleted = 0
+    </select>
+
+    <select id="selectAiRoleList" resultType="org.bedrock.ai.vo.AiRoleListVO">
+        SELECT id,
+               role_name   AS roleName,
+               role_avatar AS roleAvatar,
+               remark,
+               model_id    AS modelId,
+               status
+        FROM bedrock_ai_role
+        WHERE is_deleted = 0
+        <if test="param.roleName != null and param.roleName != ''">
+            AND role_name LIKE concat('%', #{param.roleName}, '%')
+        </if>
+        <if test="param.status != null">
+            AND status = #{param.status}
+        </if>
+        ORDER BY create_time DESC
+    </select>
+</mapper>

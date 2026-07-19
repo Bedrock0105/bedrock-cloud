@@ -1,0 +1,57 @@
+package org.bedrock.system.param;
+
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
+import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Data;
+
+import java.io.Serial;
+import java.io.Serializable;
+
+@Data
+public class DeptSubmitParam implements Serializable {
+
+    @Serial
+    private static final long serialVersionUID = 1L;
+
+    @JsonSerialize(using = ToStringSerializer.class)
+    @Schema(description = "主键")
+    private Long id;
+
+    /**
+     * 上级id
+     */
+    @JsonSerialize(using = ToStringSerializer.class)
+    @Schema(description = "上级id")
+    private Long parentId;
+
+    /**
+     * 部门名称
+     */
+    @Schema(description = "部门名称")
+    private String deptName;
+
+    /**
+     * 部门编号
+     */
+    @Schema(description = "部门编号")
+    private String deptCode;
+
+    /**
+     * 组织类型
+     */
+    @Schema(description = "组织类型")
+    private Integer category;
+
+    /**
+     * 排序
+     */
+    @Schema(description = "排序")
+    private Integer sort;
+
+    /**
+     * 组织描述
+     */
+    @Schema(description = "组织描述")
+    private String remark;
+}

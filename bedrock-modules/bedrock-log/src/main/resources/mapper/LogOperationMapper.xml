@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.bedrock.log.mapper.LogOperationMapper">
+    <select id="selectLogOperationList" resultType="org.bedrock.log.vo.LogOperationListVO">
+        select
+        id,
+        type,sub_type,duration ,action,user_name,
+        service_name,server_ip,env,remote_ip,request_url,
+        request_type,create_time
+        from bedrock_log_operation blo
+        <where>
+            <if test="param.startTime != null">
+                and blo.create_time &gt;= #{param.startTime}
+            </if>
+            <if test="param.endTime != null">
+                and blo.create_time &lt;= #{param.endTime}
+            </if>
+            <if test="param.type != null and param.type != ''">
+                and blo.type like concat('%',#{param.type},'%')
+            </if>
+            <if test="param.subType != null and param.subType != ''">
+                and blo.sub_type like concat('%',#{param.subType},'%')
+            </if>
+            <if test="param.userName != null and param.userName != ''">
+                and blo.user_name like concat('%',#{param.userName},'%')
+            </if>
+            <if test="param.serviceName != null and param.serviceName != ''">
+                and blo.service_name like concat('%',#{param.serviceName},'%')
+            </if>
+            <if test="param.serverIp != null and param.serverIp != ''">
+                and blo.server_ip like concat('%',#{param.serverIp},'%')
+            </if>
+            <if test="param.remoteIp != null and param.remoteIp != ''">
+                and blo.remote_ip like concat('%',#{param.remoteIp},'%')
+            </if>
+            <if test="param.requestUrl != null and param.requestUrl != ''">
+                and blo.request_url like concat('%',#{param.requestUrl},'%')
+            </if>
+            <if test="param.requestType != null and param.requestType != ''">
+                and blo.request_type = #{param.requestType}
+            </if>
+        </where>
+        order by blo.create_time desc
+    </select>
+</mapper>

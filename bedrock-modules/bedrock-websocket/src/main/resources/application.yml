@@ -1,0 +1,6 @@
+server:
+  port: 8089
+bedrock:
+  redis:
+    stream:
+      enabled: true

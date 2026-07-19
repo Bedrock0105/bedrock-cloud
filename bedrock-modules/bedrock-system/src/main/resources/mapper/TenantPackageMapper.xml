@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.bedrock.system.mapper.TenantPackageMapper">
+    <select id="listTenantPackage" resultType="org.bedrock.system.entity.TenantPackage">
+        select id,name,remark,create_time
+        from bedrock_tenant_package
+        where is_deleted = 0
+        <if test="param.name != null and param.name != null">
+            and name like concat('%', #{param.name}, '%')
+        </if>
+    </select>
+</mapper>

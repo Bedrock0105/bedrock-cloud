@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.bedrock.system.mapper.DeptMapper">
+    <select id="selectDeptListByAdminId" resultType="org.bedrock.system.entity.Dept">
+        select bd.id,
+               parent_id,
+               ancestors,
+               dept_name
+        from bedrock_admin_dept bad
+                 inner join bedrock_dept bd on bad.dept_id = bd.id
+        where bad.admin_id = #{adminId}
+          and bd.is_deleted = 0
+    </select>
+    <select id="selectDetailVO" resultType="org.bedrock.system.vo.DeptDetailVO">
+        select bd.id,
+               bd.dept_name,
+               bd.dept_code,
+               bd.remark,
+               bd.sort,
+               bd.level,
+               bd.parent_id,
+               bd.ancestors,
+               bd.category,
+               if(bd.parent_id = 0, '顶级',
+                  (select bdp.dept_name from bedrock_dept bdp where bdp.id = bd.parent_id)) as parentName
+        from bedrock_dept bd
+        where bd.id = #{id}
+          and bd.is_deleted = 0
+    </select>
+    <select id="selectTreeNodeDept" resultType="org.bedrock.system.vo.DeptTreeVO">
+        select bd.id,
+               bd.parent_id,
+               bd.dept_name as deptName,
+               bd.dept_code as deptCode,
+               bd.sort,
+               bd.remark,
+               bd.category,
+               bd.create_time
+        from bedrock_dept bd
+        where bd.is_deleted = 0
+    </select>
+    <select id="selectDeptByParentId" resultType="org.bedrock.system.vo.DeptListVO">
+        select bd.id,
+        bd.parent_id,
+        bd.dept_name,
+        bd.dept_code,
+        bd.category,
+        (exists(select 1 from bedrock_dept bdh where bdh.parent_id = bd.id)) as hasChildren
+        from bedrock_dept bd
+        where bd.is_deleted = 0
+        <if test="param.parentId != null">
+            and bd.parent_id = #{param.parentId}
+        </if>
+        <if test="param.category != null">
+            and bd.category = #{param.category}
+        </if>
+        <if test="param.deptName != null and param.deptName != ''">
+            and bd.dept_name like concat('%',#{param.deptName},'%')
+        </if>
+        order by bd.sort,bd.create_time desc
+    </select>
+</mapper>

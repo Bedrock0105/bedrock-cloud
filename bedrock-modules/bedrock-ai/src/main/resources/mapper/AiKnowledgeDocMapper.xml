@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.bedrock.ai.mapper.AiKnowledgeDocMapper">
+
+    <update id="updateRecallCountIncr">
+        UPDATE bedrock_ai_knowledge_doc
+        SET recall_count = recall_count + 1
+        WHERE id IN (
+        <foreach collection="docIds" item="id" separator=",">
+            #{id}
+        </foreach>
+        )
+        AND is_deleted = 0
+    </update>
+
+    <select id="selectDetailById" resultType="org.bedrock.ai.vo.AiKnowledgeDocDetailVO">
+        SELECT d.id,
+               d.knowledge_id    AS knowledgeId,
+               d.doc_title       AS docTitle,
+               d.doc_source_type AS docSourceType,
+               d.file_url        AS fileUrl,
+               d.file_size       AS fileSize,
+               d.file_suffix     AS fileSuffix,
+               d.slice_mode      AS sliceMode,
+               d.recall_count    AS recallCount,
+               d.status,
+               d.create_time     AS createTime
+        FROM bedrock_ai_knowledge_doc d
+        WHERE d.id = #{id}
+          AND d.is_deleted = 0
+    </select>
+
+    <select id="selectAiKnowledgeDocList" resultType="org.bedrock.ai.vo.AiKnowledgeDocListVO">
+        SELECT d.id,
+               d.knowledge_id    AS knowledgeId,
+               d.doc_title       AS docTitle,
+               d.doc_source_type AS docSourceType,
+               d.file_suffix     AS fileSuffix,
+               d.file_size       AS fileSize,
+               d.slice_mode      AS sliceMode,
+               d.recall_count    AS recallCount,
+               d.status,
+               d.create_time     AS createTime
+        FROM bedrock_ai_knowledge_doc d
+        WHERE d.is_deleted = 0
+        <if test="param.knowledgeId != null">
+            AND d.knowledge_id = #{param.knowledgeId}
+        </if>
+        <if test="param.docTitle != null and param.docTitle != ''">
+            AND d.doc_title LIKE concat('%', #{param.docTitle}, '%')
+        </if>
+        <if test="param.docSourceType != null and param.docSourceType != ''">
+            AND d.doc_source_type = #{param.docSourceType}
+        </if>
+        <if test="param.status != null">
+            AND d.status = #{param.status}
+        </if>
+        ORDER BY d.create_time DESC
+    </select>
+</mapper>

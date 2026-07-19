@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.bedrock.system.mapper.AdminMapper">
+    <resultMap id="selectDetailByIdResultMap" type="org.bedrock.system.vo.AdminDetailVO">
+        <id column="id" property="id"/>
+        <result column="username" property="username"/>
+        <result column="avatar" property="avatar"/>
+        <result column="nickname" property="nickname"/>
+        <result column="tenant_id" property="tenantId"/>
+        <result column="sex" property="sex"/>
+        <result column="status" property="status"/>
+        <result column="phone" property="phone"/>
+        <result column="email" property="email"/>
+        <result column="remark" property="remark"/>
+        <collection property="adminDept" ofType="org.bedrock.system.vo.AdminDeptVO">
+            <result column="dept_id" property="deptId"/>
+            <result column="dept_name" property="deptName"/>
+        </collection>
+        <collection property="adminRole" ofType="org.bedrock.system.vo.AdminRoleVO">
+            <result column="role_id" property="roleId"/>
+            <result column="role_name" property="roleName"/>
+            <result column="role_alias" property="roleAlias"/>
+        </collection>
+    </resultMap>
+
+
+    <select id="selectDetailById" resultMap="selectDetailByIdResultMap">
+        select ba.id,
+               ba.username,
+               ba.avatar,
+               ba.nickname,
+               ba.tenant_id,
+               ba.sex,
+               ba.phone,
+               ba.email,
+               ba.status,
+               ba.remark,
+               bd.id         as dept_id,
+               bd.dept_name  as dept_name,
+               br.id         as role_id,
+               br.role_name  as role_name,
+               br.role_alias as role_alias
+        from bedrock_admin ba
+                 left join bedrock_admin_dept bad on ba.id = bad.admin_id
+                 left join bedrock_dept bd on bad.dept_id = bd.id
+                 left join bedrock_admin_role bar on ba.id = bar.admin_id
+                 left join bedrock_role br on bar.role_id = br.id
+        where ba.is_deleted = 0
+          and ba.id = #{id}
+    </select>
+    <select id="selectAdminDetailList" resultType="org.bedrock.system.vo.AdminListVO">
+        select ba.id,
+        ba.username,
+        ba.avatar,
+        ba.nickname,
+        ba.sex,
+        ba.phone,
+        ba.email,
+        ba.status,
+        ba.create_time
+        from bedrock_admin ba
+        where ba.is_deleted = 0
+        <if test="params.username != null and params.username != ''">
+            and ba.username like concat('%',#{params.username},'%')
+        </if>
+        <if test="params.nickname != null and params.nickname != ''">
+            and ba.nickname like concat('%',#{params.nickname},'%')
+        </if>
+        <if test="params.status != null">
+            and ba.status = #{params.status}
+        </if>
+        <if test="params.phone != null and params.phone != ''">
+            and ba.phone like concat('%',#{params.phone},'%')
+        </if>
+        <if test="params.email != null and params.email != ''">
+            and ba.email like concat('%',#{params.email},'%')
+        </if>
+        <if test="params.sex != null and params.sex != ''">
+            and ba.sex = #{params.sex}
+        </if>
+        <if test="params.deptId != null">
+            and exists(select 1 from bedrock_admin_dept where admin_id = ba.id and dept_id = #{params.deptId})
+        </if>
+        <if test="params.roleId != null">
+            and exists(select 1 from bedrock_admin_role where admin_id = ba.id and role_id = #{params.roleId})
+        </if>
+        and not exists(select 1 from bedrock_admin_role bar
+        inner join bedrock_role br on bar.role_id = br.id
+        where admin_id = ba.id and br.role_alias in (
+        <foreach collection="noRoleAlias" item="alias" separator=",">
+            #{alias}
+        </foreach>
+        ))
+        order by ba.create_time desc
+    </select>
+    <select id="selectExcelList" resultType="org.bedrock.system.excel.AdminExportExcel">
+        select ba.id,
+        ba.username,
+        ba.nickname,
+        ba.sex,
+        ba.phone,
+        ba.email,
+        ba.status,
+        ba.remark,
+        bd.dept_name,
+        br.role_name
+        from bedrock_admin ba
+        left join bedrock_admin_dept bad on ba.id = bad.admin_id
+        left join bedrock_dept bd on bd.id = bad.dept_id
+        left join bedrock_admin_role bar on ba.id = bar.admin_id
+        left join bedrock_role br on bar.role_id = br.id
+        where ba.is_deleted = 0
+        <if test="params.username != null and params.username != ''">
+            and ba.username like concat('%',#{params.username},'%')
+        </if>
+        <if test="params.nickname != null and params.nickname != ''">
+            and ba.nickname like concat('%',#{params.nickname},'%')
+        </if>
+        <if test="params.status != null">
+            and ba.status = #{params.status}
+        </if>
+        <if test="params.phone != null and params.phone != ''">
+            and ba.phone like concat('%',#{params.phone},'%')
+        </if>
+        <if test="params.email != null and params.email != ''">
+            and ba.email like concat('%',#{params.email},'%')
+        </if>
+        <if test="params.sex != null and params.sex != ''">
+            and ba.sex = #{params.sex}
+        </if>
+        <if test="params.deptId != null">
+            and exists(select 1 from bedrock_admin_dept where admin_id = ba.id and dept_id = #{params.deptId})
+        </if>
+        <if test="params.roleId != null">
+            and exists(select 1 from bedrock_admin_role where admin_id = ba.id and role_id = #{params.roleId})
+        </if>
+        and not exists(select 1 from bedrock_admin_role bar
+        inner join bedrock_role br on bar.role_id = br.id
+        where admin_id = ba.id and br.role_alias in (
+        <foreach collection="noRoleAlias" item="alias" separator=",">
+            #{alias}
+        </foreach>
+        ))
+        order by ba.create_time desc
+    </select>
+</mapper>

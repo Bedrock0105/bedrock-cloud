@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.bedrock.ai.mapper.AiModelMapper">
+    <select id="selectDetailById" resultType="org.bedrock.ai.vo.AiModelDetailVO">
+        SELECT id,
+               api_key_id   AS apiKeyId,
+               model_name   AS modelName,
+               model_avatar AS modelAvatar,
+               model,
+               platform,
+               model_type   AS modelType,
+               temperature,
+               max_tokens   AS maxTokens,
+               max_messages AS maxMessages,
+               support_multimodal AS supportMultimodal,
+               sort_order   AS sortOrder,
+               is_default   AS isDefault,
+               remark
+        FROM bedrock_ai_model
+        WHERE id = #{id}
+          AND is_deleted = 0
+    </select>
+    <select id="selectCheckById" resultType="org.bedrock.ai.vo.AiModelCheckVO">
+        SELECT m.id,
+               m.api_key_id   AS apiKeyId,
+               m.model_name   AS modelName,
+               m.model,
+               m.platform,
+               m.model_type   AS modelType,
+               m.temperature,
+               m.max_tokens   AS maxTokens,
+               m.max_messages AS maxMessages,
+               m.support_multimodal AS supportMultimodal,
+               m.status,
+               m.remark,
+               k.api_key      AS apiKey,
+               k.key_name     AS apiKeyName,
+               k.base_url     AS baseUrl,
+               k.api_path     AS apiPath,
+               k.status       AS apiKeyStatus
+        FROM bedrock_ai_model m
+                 LEFT JOIN bedrock_ai_api_key k ON m.api_key_id = k.id AND k.is_deleted = 0
+        WHERE m.id = #{id}
+          AND m.is_deleted = 0
+    </select>
+    <select id="selectAiModelList" resultType="org.bedrock.ai.vo.AiModelListVO">
+        SELECT m.id,
+        m.api_key_id AS apiKeyId,
+        k.key_name AS apiKeyName,
+        m.model_name AS modelName,
+        m.model_avatar AS modelAvatar,
+        m.model,
+        m.platform,
+        m.model_type AS modelType,
+        m.temperature,
+        m.max_tokens AS maxTokens,
+        m.max_messages AS maxMessages,
+        m.support_multimodal AS supportMultimodal,
+        m.sort_order AS sortOrder,
+        m.is_default AS isDefault,
+        m.status,
+        m.remark
+        FROM bedrock_ai_model m
+        LEFT JOIN bedrock_ai_api_key k ON m.api_key_id = k.id AND k.is_deleted = 0
+        WHERE m.is_deleted = 0
+        <if test="param.modelName != null and param.modelName != ''">
+            AND m.model_name LIKE concat('%', #{param.modelName}, '%')
+        </if>
+        <if test="param.model != null and param.model != ''">
+            AND m.model LIKE concat('%', #{param.model}, '%')
+        </if>
+        <if test="param.platform != null">
+            AND m.platform = #{param.platform}
+        </if>
+        <if test="param.modelType != null">
+            AND m.model_type = #{param.modelType}
+        </if>
+        <if test="param.status != null">
+            AND m.status = #{param.status}
+        </if>
+        ORDER BY m.sort_order ASC, m.create_time DESC
+    </select>
+</mapper>

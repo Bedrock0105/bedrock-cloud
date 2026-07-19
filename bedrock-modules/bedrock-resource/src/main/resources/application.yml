@@ -1,0 +1,4 @@
+server:
+  port: 8083
+  undertow:
+    max-http-post-size: 2048MB

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.bedrock.system.mapper.PermissionApiMapper">
+    <select id="treePermissionApi" resultType="org.bedrock.system.vo.PermissionTreeNode">
+        select
+        bm.id as id,
+        bm.parent_id as parentId,
+        bm.menu_name as name,
+        bm.sort as sort,
+        1 as type
+        from bedrock_menu bm
+        where bm.is_deleted = 0
+        and bm.menu_type in (1, 2)
+        union all
+        select bpd.id,bpd.menu_id as parentId,
+        bpd.name,
+        0 as sort,
+        2 as type
+        from bedrock_permission_api bpd
+        <if test="roleIds != null and roleIds.size() > 0">
+            inner join bedrock_role_permission brp on bpd.id = brp.permission_id
+        </if>
+        where bpd.is_deleted = 0
+        <if test="roleIds != null and roleIds.size() > 0">
+            and brp.role_id in (
+            <foreach collection="roleIds" separator="," item="item">
+                #{item}
+            </foreach>
+            )
+        </if>
+    </select>
+</mapper>

@@ -1,0 +1,525 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="a19345f6-c3fa-4202-8dab-18c8746f27c3" name="Changes" comment="feat(ai): 新增AI服务模块及知识库检索功能&#10;&#10;- 添加bedrock-ai模块及其pom.xml配置文件&#10;- 添加bedrock-ai-api模块用于AI服务API定义&#10;- 在父POM中集成Spring AI BOM依赖管理&#10;- 更新README.md文档增加AI功能介绍和模块说明&#10;- 添加AI模块到应用常量中&#10;- 重构OSS配置控制器使用接口注入方式&#10;- 在系统模块中添加管理员个人信息修改功能&#10;- 优化WebSocket连接管理和错误处理机制&#10;- 实现知识库向量检索业务逻辑和召回统计功能" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ChangesViewManager">
+    <option name="groupingKeys">
+      <option value="directory" />
+      <option value="module" />
+      <option value="repository" />
+    </option>
+  </component>
+  <component name="EmbeddingIndexingInfo">
+    <option name="cachedIndexableFilesCount" value="452" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Mybatis Mapper" />
+        <option value="Enum" />
+        <option value="Interface" />
+        <option value="Record" />
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="MavenImportPreferences">
+    <option name="generalSettings">
+      <MavenGeneralSettings>
+        <option name="customMavenHome" value="D:\jyz\maven\apache-maven-3.6.3" />
+        <option name="mavenHomeTypeForPersistence" value="CUSTOM" />
+        <option name="userSettingsFile" value="D:\jyz\maven\apache-maven-3.6.3\conf\settings.xml" />
+      </MavenGeneralSettings>
+    </option>
+  </component>
+  <component name="McpProjectServerCommands">
+    <commands />
+    <urls />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 7
+}</component>
+  <component name="ProjectId" id="3FAJsi57WrdJTvwqg906pHuAo1T" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;JUnit.ChatModelTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.ChatModelTest.test1.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.ChatModelTest.test2.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.ChatModelTest.test3.executor&quot;: &quot;Debug&quot;,
+    &quot;JUnit.ChatModelTest.test4.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.ChatModelTest.test5.executor&quot;: &quot;Debug&quot;,
+    &quot;JUnit.DeepSeek.charSet (1).executor&quot;: &quot;Debug&quot;,
+    &quot;JUnit.DeepSeek.charSet.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.DeepSeek.charSteamSet.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.Test1 (1).executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.Test1.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.Test1.test1 (1).executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.Test1.test1.executor&quot;: &quot;Run&quot;,
+    &quot;Maven.bedrock-cloud [clean].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.bedrock-cloud [compile].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.bedrock-cloud [package].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.package.executor&quot;: &quot;Run&quot;,
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
+    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
+    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
+    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
+    &quot;RunOnceActivity.MCP Project settings loaded&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
+    &quot;Spring Boot.AIApplication.executor&quot;: &quot;Debug&quot;,
+    &quot;Spring Boot.AuthApplication.executor&quot;: &quot;Debug&quot;,
+    &quot;Spring Boot.GatewayApplication.executor&quot;: &quot;Debug&quot;,
+    &quot;Spring Boot.LogApplication.executor&quot;: &quot;Debug&quot;,
+    &quot;Spring Boot.ResourceApplication.executor&quot;: &quot;Debug&quot;,
+    &quot;Spring Boot.SystemApplication.executor&quot;: &quot;Debug&quot;,
+    &quot;Spring Boot.WebsocketApplication.executor&quot;: &quot;Debug&quot;,
+    &quot;codeWithMe.voiceChat.enabledByDefault&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;F:/jyz/aaaaa/bedrock/bedrock-cloud/bedrock-modules/bedrock-ai/src/main/java/org/bedrock/ai/factory/transformer&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;run.configurations.included.in.services&quot;: &quot;true&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;SQL Resolution Scopes&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  },
+  &quot;keyToStringList&quot;: {
+    &quot;DatabaseDriversLRU&quot;: [
+      &quot;mysql&quot;
+    ]
+  }
+}</component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="F:\jyz\aaaaa\bedrock\bedrock-cloud\bedrock-modules\bedrock-ai\src\main\java\org\bedrock\ai\factory\transformer" />
+      <recent name="F:\jyz\aaaaa\bedrock\bedrock-cloud\bedrock-api\bedrock-ai-api\src\main\java\org\bedrock\common\ai\enums" />
+      <recent name="F:\jyz\aaaaa\bedrock\bedrock-cloud\bedrock-api\bedrock-resource-api\src\main\java\org\bedrock\common\resource\" />
+      <recent name="F:\jyz\aaaaa\bedrock\bedrock-cloud\bedrock-api\bedrock-resource-api\src\main\java\org\bedrock\common\resource\model\email" />
+      <recent name="F:\jyz\aaaaa\bedrock\bedrock-cloud\bedrock-api\bedrock-resource-api\src\main\java\org\bedrock\common\resource\model" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="F:\jyz\aaaaa\bedrock\bedrock-cloud\bedrock-modules\bedrock-ai\src" />
+    </key>
+    <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
+      <recent name="org.bedrock.ai.controller" />
+      <recent name="org.bedrock.ai" />
+    </key>
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="org.bedrock.ai.vo" />
+      <recent name="org.bedrock.ai.param" />
+      <recent name="org.bedrock.ai.factory.documet.impl" />
+      <recent name="org.bedrock.common.ai.enums" />
+      <recent name="org.bedrock.ai" />
+    </key>
+  </component>
+  <component name="RunDashboard">
+    <option name="configurationTypes">
+      <set>
+        <option value="KtorApplicationConfigurationType" />
+        <option value="MicronautRunConfigurationType" />
+        <option value="QuarkusRunConfigurationType" />
+        <option value="SpringBootApplicationConfigurationType" />
+      </set>
+    </option>
+    <option name="configurationStatuses">
+      <map>
+        <entry key="SpringBootApplicationConfigurationType">
+          <value>
+            <map>
+              <entry key="AIApplication" value="STOPPED" />
+              <entry key="AuthApplication" value="STOPPED" />
+              <entry key="GatewayApplication" value="STOPPED" />
+              <entry key="LogApplication" value="STOPPED" />
+              <entry key="ResourceApplication" value="STOPPED" />
+              <entry key="SystemApplication" value="STOPPED" />
+              <entry key="WebsocketApplication" value="STOPPED" />
+            </map>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="RunManager" selected="JUnit.ChatModelTest.test5">
+    <configuration name="ChatModelTest.test1" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="bedrock-ai" />
+      <shortenClasspath name="ARGS_FILE" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="org.bedrock.ai.controller.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="org.bedrock.ai.controller" />
+      <option name="MAIN_CLASS_NAME" value="org.bedrock.ai.controller.ChatModelTest" />
+      <option name="METHOD_NAME" value="test1" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ChatModelTest.test2" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="bedrock-ai" />
+      <shortenClasspath name="ARGS_FILE" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="org.bedrock.ai.controller.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="org.bedrock.ai.controller" />
+      <option name="MAIN_CLASS_NAME" value="org.bedrock.ai.controller.ChatModelTest" />
+      <option name="METHOD_NAME" value="test2" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ChatModelTest.test3" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="bedrock-ai" />
+      <shortenClasspath name="ARGS_FILE" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="org.bedrock.ai.controller.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="org.bedrock.ai.controller" />
+      <option name="MAIN_CLASS_NAME" value="org.bedrock.ai.controller.ChatModelTest" />
+      <option name="METHOD_NAME" value="test3" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ChatModelTest.test4" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="bedrock-ai" />
+      <shortenClasspath name="ARGS_FILE" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="org.bedrock.ai.controller.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="org.bedrock.ai.controller" />
+      <option name="MAIN_CLASS_NAME" value="org.bedrock.ai.controller.ChatModelTest" />
+      <option name="METHOD_NAME" value="test4" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ChatModelTest.test5" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="bedrock-ai" />
+      <shortenClasspath name="ARGS_FILE" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="org.bedrock.ai.controller.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="org.bedrock.ai.controller" />
+      <option name="MAIN_CLASS_NAME" value="org.bedrock.ai.controller.ChatModelTest" />
+      <option name="METHOD_NAME" value="test5" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="JUnit" factoryName="JUnit">
+      <shortenClasspath name="ARGS_FILE" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="package" type="MavenRunConfiguration" factoryName="Maven">
+      <MavenSettings>
+        <option name="myGeneralSettings" />
+        <option name="myRunnerSettings" />
+        <option name="myRunnerParameters">
+          <MavenRunnerParameters>
+            <option name="cmdOptions" />
+            <option name="profiles">
+              <set />
+            </option>
+            <option name="goals">
+              <list>
+                <option value="clean" />
+                <option value="package" />
+                <option value="-D" />
+                <option value="maven.test.skip=true" />
+                <option value="-T" />
+                <option value="1C" />
+              </list>
+            </option>
+            <option name="multimoduleDir" />
+            <option name="pomFileName" value="pom.xml" />
+            <option name="profilesMap">
+              <map />
+            </option>
+            <option name="projectsCmdOptionValues">
+              <list />
+            </option>
+            <option name="resolveToWorkspace" value="false" />
+            <option name="workingDirPath" value="$PROJECT_DIR$" />
+          </MavenRunnerParameters>
+        </option>
+      </MavenSettings>
+      <method v="2" />
+    </configuration>
+    <configuration name="AIApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <module name="bedrock-ai" />
+      <option name="SHORTEN_COMMAND_LINE" value="ARGS_FILE" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="org.bedrock.ai.AIApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="AuthApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <module name="bedrock-auth" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="org.bedrock.auth.AuthApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="GatewayApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <module name="bedrock-gateway" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="org.bedrock.gateway.GatewayApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="LogApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <module name="bedrock-log" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="org.bedrock.log.LogApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ResourceApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <module name="bedrock-resource" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="org.bedrock.resource.ResourceApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="SystemApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <module name="bedrock-system" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="org.bedrock.system.SystemApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="WebsocketApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <module name="bedrock-websocket" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="org.bedrock.websocket.WebsocketApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+      <option name="SHORTEN_COMMAND_LINE" value="ARGS_FILE" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="JUnit.ChatModelTest.test5" />
+        <item itemvalue="JUnit.ChatModelTest.test4" />
+        <item itemvalue="JUnit.ChatModelTest.test3" />
+        <item itemvalue="JUnit.ChatModelTest.test2" />
+        <item itemvalue="JUnit.ChatModelTest.test1" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="a19345f6-c3fa-4202-8dab-18c8746f27c3" name="Changes" comment="" />
+      <created>1781512149120</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1781512149120</updated>
+      <workItem from="1781512150138" duration="6691000" />
+      <workItem from="1781532376324" duration="4804000" />
+      <workItem from="1781572184937" duration="8018000" />
+      <workItem from="1782014504119" duration="4396000" />
+      <workItem from="1782090925239" duration="44000" />
+      <workItem from="1782176920341" duration="22000" />
+      <workItem from="1782383374927" duration="45000" />
+      <workItem from="1782574425883" duration="14857000" />
+      <workItem from="1782695316933" duration="81000" />
+      <workItem from="1782735458195" duration="1565000" />
+      <workItem from="1782781716990" duration="94000" />
+      <workItem from="1782900885404" duration="5266000" />
+      <workItem from="1782954627601" duration="53000" />
+      <workItem from="1782964885466" duration="8283000" />
+      <workItem from="1782983704611" duration="23000" />
+      <workItem from="1782986881152" duration="772000" />
+      <workItem from="1783041268204" duration="360000" />
+      <workItem from="1783046253430" duration="2811000" />
+      <workItem from="1783088066172" duration="8078000" />
+      <workItem from="1783300293362" duration="11827000" />
+      <workItem from="1783348345255" duration="5967000" />
+      <workItem from="1783387005650" duration="20686000" />
+      <workItem from="1783425213097" duration="233000" />
+      <workItem from="1783431177494" duration="12970000" />
+      <workItem from="1783473120114" duration="21056000" />
+      <workItem from="1783515694664" duration="2606000" />
+      <workItem from="1783528867072" duration="3743000" />
+      <workItem from="1783561505366" duration="9399000" />
+      <workItem from="1783592825193" duration="507000" />
+      <workItem from="1783603298770" duration="15122000" />
+      <workItem from="1783646200045" duration="2748000" />
+      <workItem from="1783652355215" duration="20034000" />
+      <workItem from="1783688201540" duration="84531000" />
+      <workItem from="1783904967484" duration="22753000" />
+      <workItem from="1783947972336" duration="12752000" />
+      <workItem from="1783991369771" duration="8612000" />
+      <workItem from="1784032013690" duration="16041000" />
+      <workItem from="1784077499163" duration="9074000" />
+      <workItem from="1784098068737" duration="880000" />
+      <workItem from="1784104648475" duration="3082000" />
+      <workItem from="1784120123986" duration="1941000" />
+      <workItem from="1784164311857" duration="28123000" />
+      <workItem from="1784203249738" duration="9589000" />
+      <workItem from="1784217117673" duration="290000" />
+      <workItem from="1784250226139" duration="624000" />
+      <workItem from="1784253531434" duration="18490000" />
+      <workItem from="1784290581666" duration="37552000" />
+      <workItem from="1784453548367" duration="65000" />
+      <workItem from="1784453618264" duration="7000" />
+    </task>
+    <task id="LOCAL-00001" summary="fix(gateway): 修复网关配置并更新依赖链接&#10;&#10;- 移除bootstrap.yml中的重复配置项&#10;- 修正README.md中bedrock-commons仓库地址链接&#10;- 删除README.md末尾的致谢和联系方式章节内容">
+      <option name="closed" value="true" />
+      <created>1782035018444</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1782035018444</updated>
+    </task>
+    <task id="LOCAL-00002" summary="feat(ai): 新增AI服务模块及知识库检索功能&#10;&#10;- 添加bedrock-ai模块及其pom.xml配置文件&#10;- 添加bedrock-ai-api模块用于AI服务API定义&#10;- 在父POM中集成Spring AI BOM依赖管理&#10;- 更新README.md文档增加AI功能介绍和模块说明&#10;- 添加AI模块到应用常量中&#10;- 重构OSS配置控制器使用接口注入方式&#10;- 在系统模块中添加管理员个人信息修改功能&#10;- 优化WebSocket连接管理和错误处理机制&#10;- 实现知识库向量检索业务逻辑和召回统计功能">
+      <option name="closed" value="true" />
+      <created>1784450275812</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1784450275812</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="fix(gateway): 修复网关配置并更新依赖链接&#10;&#10;- 移除bootstrap.yml中的重复配置项&#10;- 修正README.md中bedrock-commons仓库地址链接&#10;- 删除README.md末尾的致谢和联系方式章节内容" />
+    <MESSAGE value="feat(ai): 新增AI服务模块及知识库检索功能&#10;&#10;- 添加bedrock-ai模块及其pom.xml配置文件&#10;- 添加bedrock-ai-api模块用于AI服务API定义&#10;- 在父POM中集成Spring AI BOM依赖管理&#10;- 更新README.md文档增加AI功能介绍和模块说明&#10;- 添加AI模块到应用常量中&#10;- 重构OSS配置控制器使用接口注入方式&#10;- 在系统模块中添加管理员个人信息修改功能&#10;- 优化WebSocket连接管理和错误处理机制&#10;- 实现知识库向量检索业务逻辑和召回统计功能" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat(ai): 新增AI服务模块及知识库检索功能&#10;&#10;- 添加bedrock-ai模块及其pom.xml配置文件&#10;- 添加bedrock-ai-api模块用于AI服务API定义&#10;- 在父POM中集成Spring AI BOM依赖管理&#10;- 更新README.md文档增加AI功能介绍和模块说明&#10;- 添加AI模块到应用常量中&#10;- 重构OSS配置控制器使用接口注入方式&#10;- 在系统模块中添加管理员个人信息修改功能&#10;- 优化WebSocket连接管理和错误处理机制&#10;- 实现知识库向量检索业务逻辑和召回统计功能" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint type="java-line">
+          <url>jar://D:/jyz/maven/repository/org/bedrock/bedrock-common-code/1.0.0-SNAPSHOT/bedrock-common-code-1.0.0-SNAPSHOT-sources.jar!/org/bedrock/common/code/eventbus/AbstractEventBus.java</url>
+          <line>107</line>
+          <option name="timeStamp" value="19" />
+        </line-breakpoint>
+        <line-breakpoint type="java-line">
+          <url>jar://D:/jyz/maven/repository/org/bedrock/bedrock-common-code/1.0.0-SNAPSHOT/bedrock-common-code-1.0.0-SNAPSHOT-sources.jar!/org/bedrock/common/code/eventbus/impl/RedisEventBusImpl.java</url>
+          <line>69</line>
+          <option name="timeStamp" value="36" />
+        </line-breakpoint>
+        <line-breakpoint type="java-line">
+          <url>file://$PROJECT_DIR$/bedrock-modules/bedrock-ai/src/test/java/org/bedrock/ai/DeepSeek.java</url>
+          <line>24</line>
+          <option name="timeStamp" value="45" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/bedrock-modules/bedrock-ai/src/main/java/org/bedrock/ai/tool/function/CurrentUserToolFunction.java</url>
+          <line>30</line>
+          <option name="timeStamp" value="65" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>jar://D:/jyz/maven/repository/org/mybatis/mybatis/3.5.19/mybatis-3.5.19-sources.jar!/org/apache/ibatis/type/TypeHandlerRegistry.java</url>
+          <line>227</line>
+          <option name="timeStamp" value="81" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>jar://D:/jyz/maven/repository/com/alibaba/cloud/ai/spring-ai-alibaba-dashscope/1.1.2.2/spring-ai-alibaba-dashscope-1.1.2.2-sources.jar!/com/alibaba/cloud/ai/dashscope/image/DashScopeImageModel.java</url>
+          <line>279</line>
+          <option name="timeStamp" value="85" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>jar://D:/jyz/maven/repository/com/alibaba/cloud/ai/spring-ai-alibaba-dashscope/1.1.2.2/spring-ai-alibaba-dashscope-1.1.2.2-sources.jar!/com/alibaba/cloud/ai/dashscope/image/DashScopeImageModel.java</url>
+          <line>240</line>
+          <option name="timeStamp" value="87" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/bedrock-modules/bedrock-ai/src/test/java/org/bedrock/ai/controller/ChatModelTest.java</url>
+          <line>137</line>
+          <option name="timeStamp" value="89" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>jar://D:/jyz/maven/repository/com/baomidou/mybatis-plus-extension/3.5.15/mybatis-plus-extension-3.5.15-sources.jar!/com/baomidou/mybatisplus/extension/handlers/JacksonTypeHandler.java</url>
+          <line>57</line>
+          <option name="timeStamp" value="100" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/bedrock-modules/bedrock-ai/src/main/java/org/bedrock/ai/service/impl/AiKnowledgeChunkServiceImpl.java</url>
+          <line>71</line>
+          <option name="timeStamp" value="113" />
+        </line-breakpoint>
+        <breakpoint type="java-exception">
+          <properties class="java.nio.channels.ClosedChannelException" package="java.nio.channels" />
+          <option name="timeStamp" value="51" />
+        </breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+    <pin-to-top-manager>
+      <pinned-members>
+        <PinnedItemInfo parentTag="org.springframework.ai.deepseek.DeepSeekAssistantMessage" memberName="metadata" />
+        <PinnedItemInfo parentTag="org.springframework.ai.chat.messages.UserMessage" memberName="textContent" />
+      </pinned-members>
+    </pin-to-top-manager>
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
+  </component>
+</project>

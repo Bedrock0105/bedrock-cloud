@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>org.bedrock</groupId>
+        <artifactId>bedrock-modules</artifactId>
+        <version>${revision}</version>
+    </parent>
+
+    <artifactId>bedrock-ai</artifactId>
+    <packaging>jar</packaging>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.bedrock</groupId>
+            <artifactId>bedrock-ai-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.bedrock</groupId>
+            <artifactId>bedrock-common-cloud</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.bedrock</groupId>
+            <artifactId>bedrock-common-ai</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.bedrock</groupId>
+            <artifactId>bedrock-resource-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.bedrock</groupId>
+            <artifactId>bedrock-common-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <!-- spring-ai-markdown-->
+<!--        <dependency>-->
+<!--            <groupId>org.springframework.ai</groupId>-->
+<!--            <artifactId>spring-ai-markdown-document-reader</artifactId>-->
+<!--        </dependency>-->
+        <dependency>
+            <groupId>org.springframework.ai</groupId>
+            <artifactId>spring-ai-tika-document-reader</artifactId>
+        </dependency>
+
+        <!--MCP-->
+        <dependency>
+            <groupId>org.springframework.ai</groupId>
+            <artifactId>spring-ai-starter-mcp-client</artifactId>
+        </dependency>
+
+
+
+
+
+        <!--redis（可选，业务方按需引入）-->
+        <dependency>
+            <groupId>org.springframework.ai</groupId>
+            <artifactId>spring-ai-redis-store</artifactId>
+        </dependency>
+
+        <!--        &lt;!&ndash;milvus（可选，业务方按需引入）&ndash;&gt;-->
+<!--        <dependency>-->
+<!--            <groupId>org.springframework.ai</groupId>-->
+<!--            <artifactId>spring-ai-milvus-store</artifactId>-->
+<!--        </dependency>-->
+<!--        &lt;!&ndash;elasticsearch（可选，业务方按需引入）&ndash;&gt;-->
+<!--        <dependency>-->
+<!--            <groupId>org.springframework.ai</groupId>-->
+<!--            <artifactId>spring-ai-elasticsearch-store</artifactId>-->
+<!--        </dependency>-->
+<!--        <dependency>-->
+<!--            <groupId>org.springframework.ai</groupId>-->
+<!--            <artifactId>spring-ai-advisors-vector-store</artifactId>-->
+<!--        </dependency>-->
+    </dependencies>
+
+
+    <build>
+        <finalName>${project.artifactId}</finalName>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
+
+
+</project>

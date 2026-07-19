@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.bedrock.system.mapper.AdminOnlineMapper">
+    <insert id="insertForUpdate">
+        insert into bedrock_admin_online (id, admin_id, token_id, token, token_expired, last_heartbeat_time,
+                                          online_status, ws_only_id, login_time, client_ip)
+        values (#{adminOnline.id}, #{adminOnline.adminId}, #{adminOnline.tokenId},
+                #{adminOnline.token}, #{adminOnline.tokenExpired}, #{adminOnline.lastHeartbeatTime},
+                #{adminOnline.onlineStatus},
+                #{adminOnline.wsOnlyId}, #{adminOnline.loginTime}, #{adminOnline.clientIp})
+        on duplicate key update admin_id            = #{adminOnline.adminId},
+                                token_id            = #{adminOnline.tokenId},
+                                token               = #{adminOnline.token},
+                                token_expired       = #{adminOnline.tokenExpired},
+                                last_heartbeat_time = #{adminOnline.lastHeartbeatTime},
+                                online_status       = #{adminOnline.onlineStatus},
+                                ws_only_id          = #{adminOnline.wsOnlyId},
+                                login_time          = #{adminOnline.loginTime},
+                                client_ip           = #{adminOnline.clientIp}
+    </insert>
+    <select id="selectAdminOnlineList" resultType="org.bedrock.system.vo.AdminOnlineListVO">
+        select bedrock_admin_online.admin_id,
+               bedrock_admin_online.token_id,
+               bedrock_admin_online.token_expired,
+               bedrock_admin_online.ws_only_id,
+               bedrock_admin_online.client_ip,
+               bedrock_admin.username,
+               bedrock_admin.nickname,
+               bedrock_admin.phone,
+               bedrock_admin.email,
+               bedrock_admin.avatar
+        from bedrock_admin_online
+                 inner join bedrock_admin on bedrock_admin_online.admin_id = bedrock_admin.id
+        where online_status = 1
+          and bedrock_admin_online.last_heartbeat_time > #{lastHeartbeatTime}
+        order by bedrock_admin_online.login_time desc
+
+    </select>
+</mapper>

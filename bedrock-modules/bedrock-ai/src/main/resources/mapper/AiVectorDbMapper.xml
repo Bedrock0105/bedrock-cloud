@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.bedrock.ai.mapper.AiVectorDbMapper">
+
+    <select id="selectDetailById" resultType="org.bedrock.ai.vo.AiVectorDbDetailVO">
+        SELECT id,
+               db_name              AS dbName,
+               vector_db_type       AS vectorDbType,
+               host,
+               port,
+               username,
+               password,
+               database_name        AS databaseName,
+               collection_name      AS collectionName,
+               embedding_dimension  AS embeddingDimension,
+               remark
+        FROM bedrock_ai_vector_db
+        WHERE id = #{id}
+          AND is_deleted = 0
+    </select>
+
+    <!-- 单表查询连接配置及状态，供 checkAiVectorDb 使用 -->
+    <select id="selectCheckById" resultType="org.bedrock.ai.vo.AiVectorDbCheckVO">
+        SELECT id,
+               db_name              AS dbName,
+               vector_db_type       AS vectorDbType,
+               host,
+               port,
+               username,
+               password,
+               database_name        AS databaseName,
+               collection_name      AS collectionName,
+               embedding_dimension  AS embeddingDimension,
+               remark,
+               status
+        FROM bedrock_ai_vector_db
+        WHERE id = #{id}
+          AND is_deleted = 0
+    </select>
+
+    <select id="selectAiVectorDbList" resultType="org.bedrock.ai.vo.AiVectorDbListVO">
+        SELECT v.id,
+               v.db_name              AS dbName,
+               v.vector_db_type       AS vectorDbType,
+               v.host,
+               v.port,
+               v.database_name        AS databaseName,
+               v.collection_name      AS collectionName,
+               v.embedding_dimension  AS embeddingDimension,
+               v.status,
+               v.remark
+        FROM bedrock_ai_vector_db v
+        WHERE v.is_deleted = 0
+        <if test="param.dbName != null and param.dbName != ''">
+            AND v.db_name LIKE concat('%', #{param.dbName}, '%')
+        </if>
+        <if test="param.vectorDbType != null">
+            AND v.vector_db_type = #{param.vectorDbType}
+        </if>
+        <if test="param.status != null">
+            AND v.status = #{param.status}
+        </if>
+        ORDER BY v.create_time DESC
+    </select>
+</mapper>

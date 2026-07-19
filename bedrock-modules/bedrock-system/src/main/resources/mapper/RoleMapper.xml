@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.bedrock.system.mapper.RoleMapper">
+    <select id="selectRoleListByAdminId" resultType="org.bedrock.system.entity.Role">
+        select br.id,
+               role_name,
+               role_alias
+        from bedrock_admin_role bar
+                 inner join bedrock_role br on bar.role_id = br.id
+        where bar.admin_id = #{adminId}
+          and br.is_deleted = 0
+    </select>
+    <select id="selectRoleDetailById" resultType="org.bedrock.system.vo.RoleDetailVO">
+        select br.id,
+               role_name,
+               role_alias,
+               sort,
+               remark
+        from bedrock_role br
+        where br.is_deleted = 0
+          and br.id = #{id}
+    </select>
+    <select id="selectRoleList" resultType="org.bedrock.system.vo.RoleListVO">
+        select br.id,
+        role_name,
+        role_alias,
+        sort,
+        remark,
+        create_time
+        from bedrock_role br
+        where br.is_deleted = 0
+        and br.role_alias not in (
+        <foreach collection="neRoleAlias" item="alias" separator=",">
+            #{alias}
+        </foreach>)
+        <if test="param.roleName != null and param.roleName != ''">
+            and br.role_name like concat('%', #{param.roleName}, '%')
+        </if>
+        <if test="param.roleAlias != null and param.roleAlias != ''">
+            and br.role_alias like concat('%', #{param.roleAlias}, '%')
+        </if>
+        order by sort
+    </select>
+</mapper>

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<!-- AI 知识库 Mapper：详情查询、列表筛选 -->
+<mapper namespace="org.bedrock.ai.mapper.AiKnowledgeMapper">
+
+    <!-- 根据 id 查询知识库详情，关联嵌入模型与向量库 -->
+    <select id="selectDetailById" resultType="org.bedrock.ai.vo.AiKnowledgeDetailVO">
+        SELECT k.id,
+               k.knowledge_name     AS knowledgeName,
+               k.remark,
+               k.embedding_model_id AS embeddingModelId,
+               m.model_name         AS embeddingModelName,
+               k.vector_db_id       AS vectorDbId,
+               v.db_name            AS vectorDbName,
+               k.status
+        FROM bedrock_ai_knowledge k
+                 LEFT JOIN bedrock_ai_model m ON k.embedding_model_id = m.id AND m.is_deleted = 0
+                 LEFT JOIN bedrock_ai_vector_db v ON k.vector_db_id = v.id AND v.is_deleted = 0
+        WHERE k.id = #{id}
+          AND k.is_deleted = 0
+    </select>
+
+    <!-- 知识库列表，支持按名称、状态筛选 -->
+    <select id="selectAiKnowledgeList" resultType="org.bedrock.ai.vo.AiKnowledgeListVO">
+        SELECT k.id,
+               k.knowledge_name     AS knowledgeName,
+               k.remark,
+               k.embedding_model_id AS embeddingModelId,
+               m.model_name         AS embeddingModelName,
+               k.vector_db_id       AS vectorDbId,
+               v.db_name            AS vectorDbName,
+               k.status,
+               k.create_time        AS createTime
+        FROM bedrock_ai_knowledge k
+                 LEFT JOIN bedrock_ai_model m ON k.embedding_model_id = m.id AND m.is_deleted = 0
+                 LEFT JOIN bedrock_ai_vector_db v ON k.vector_db_id = v.id AND v.is_deleted = 0
+        WHERE k.is_deleted = 0
+        <if test="param.knowledgeName != null and param.knowledgeName != ''">
+            AND k.knowledge_name LIKE concat('%', #{param.knowledgeName}, '%')
+        </if>
+        <if test="param.status != null">
+            AND k.status = #{param.status}
+        </if>
+        ORDER BY k.create_time DESC
+    </select>
+</mapper>
