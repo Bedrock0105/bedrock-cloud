@@ -49,18 +49,13 @@
             <groupId>org.springframework.ai</groupId>
             <artifactId>spring-ai-starter-mcp-client</artifactId>
         </dependency>
-
-
-
-
-
         <!--redis（可选，业务方按需引入）-->
         <dependency>
             <groupId>org.springframework.ai</groupId>
             <artifactId>spring-ai-redis-store</artifactId>
         </dependency>
 
-        <!--        &lt;!&ndash;milvus（可选，业务方按需引入）&ndash;&gt;-->
+<!--                &lt;!&ndash;milvus（可选，业务方按需引入）&ndash;&gt;-->
 <!--        <dependency>-->
 <!--            <groupId>org.springframework.ai</groupId>-->
 <!--            <artifactId>spring-ai-milvus-store</artifactId>-->

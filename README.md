@@ -5,6 +5,15 @@
 Bedrock Cloud 是一个基于 **Spring Cloud** 微服务架构的企业级云服务平台。该项目采用前后端分离的分布式微服务设计，集成了认证授权、系统管理、资源管理、日志记录、WebSocket 实时通信、**AI 对话与知识库**等核心功能模块，为企业应用提供完整的基础设施支撑。
 本项目基于 [bedrock-commons](https://github.com/Bedrock0105/bedrock-commons.git) 基础框架组件库构建，充分利用了其提供的通用功能模块和最佳实践（含 `bedrock-common-ai` / Spring AI）。
 
+### 🌐 在线演示
+
+| 项目 | 说明 |
+|------|------|
+| 演示地址 | http://24.233.0.202/ |
+| 账号 / 密码 | `superadmin` / `superadmin` |
+
+界面截图见前端仓库 [bedrock-ui](https://github.com/Bedrock0105/bedrock-ui.git) README。
+
 ### 🔗 相关仓库
 
 | 项目 | 地址 |
