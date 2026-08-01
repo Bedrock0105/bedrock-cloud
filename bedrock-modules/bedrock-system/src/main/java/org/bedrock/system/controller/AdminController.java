@@ -1,5 +1,7 @@
 package org.bedrock.system.controller;
 
+import org.bedrock.common.crypto.annotation.ApiCrypto;
+import org.bedrock.common.crypto.annotation.ApiExcludeCrypto;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 import io.swagger.v3.oas.annotations.Operation;
@@ -35,6 +37,7 @@ import java.util.List;
 
 @Slf4j
 @Tag(name = "管理员 控制器")
+@ApiCrypto
 @RestController
 @RequestMapping("/admin")
 @RequiredArgsConstructor
@@ -131,6 +134,7 @@ public class AdminController extends BaseController {
         return R.status(adminService.removeById(id));
     }
 
+    @ApiExcludeCrypto
     @PostMapping("/import-excel")
     @Operation(summary = "管理员 导入")
     @ApiOperationSupport(order = 9)
@@ -144,6 +148,7 @@ public class AdminController extends BaseController {
 
     @Operation(summary = "管理员 导入模版下载")
     @ApiOperationSupport(order = 10)
+    @ApiExcludeCrypto
     @GetMapping("/download-excel")
     @ResponseExcel(fileName = "用户导入模版", sheets = @ResponseExcel.Sheet(name = "管理员列表", head = AdminImportExcel.class), inMemory = true)
     public R<List<AdminImportExcel>> downloadExcel() {
@@ -152,6 +157,7 @@ public class AdminController extends BaseController {
 
     @Operation(summary = "管理员 导出数据下载")
     @ApiOperationSupport(order = 11)
+    @ApiExcludeCrypto
     @GetMapping("/export-excel")
     @ResponseExcel(fileName = "管理员数据", sheets = @ResponseExcel.Sheet(name = "管理员列表", head = AdminExportExcel.class))
     public R<List<AdminExportExcel>> exportExcel(AdminPageParam param) {

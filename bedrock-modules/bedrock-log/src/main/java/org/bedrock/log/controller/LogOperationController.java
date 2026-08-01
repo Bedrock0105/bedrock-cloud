@@ -1,5 +1,6 @@
 package org.bedrock.log.controller;
 
+import org.bedrock.common.crypto.annotation.ApiCrypto;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 import io.swagger.v3.oas.annotations.Operation;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 
 @Tag(name = "操作日志 控制器")
+@ApiCrypto
 @RestController
 @RequestMapping("/log-operation")
 @RequiredArgsConstructor

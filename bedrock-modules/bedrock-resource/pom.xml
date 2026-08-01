@@ -29,6 +29,10 @@
             <groupId>org.bedrock</groupId>
             <artifactId>bedrock-common-resource</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.bedrock</groupId>
+            <artifactId>bedrock-common-crypto</artifactId>
+        </dependency>
 
 
 <!--        &lt;!&ndash; 引入OSS SDK &ndash;&gt;-->

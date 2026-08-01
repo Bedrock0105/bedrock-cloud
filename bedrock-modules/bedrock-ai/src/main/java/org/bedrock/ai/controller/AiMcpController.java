@@ -1,5 +1,6 @@
 package org.bedrock.ai.controller;
 
+import org.bedrock.common.crypto.annotation.ApiCrypto;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 import io.modelcontextprotocol.spec.McpSchema;
@@ -25,6 +26,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @Tag(name = "AI MCP 控制器")
+@ApiCrypto
 @RestController
 @RequestMapping("/ai-mcp")
 @RequiredArgsConstructor

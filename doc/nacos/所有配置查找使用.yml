@@ -213,3 +213,20 @@ bedrock:
         response-log: true
         response-header-log: true
         response-body-log: false
+
+  # ---------- API 加解密（crypto 模块，按需引入 bedrock-common-crypto） ----------
+  crypto:
+    enabled: false
+    # 默认算法：AES / DES / RSA / SM4 / SM2
+    algorithm: AES
+    # 自定义算法实现 Class（优先于 algorithm；不配则走枚举）
+    # algorithm-class: org.example.MyCryptoAlgorithm
+    # Query/Form 统一密文参数名
+    param-name: params
+    # 对称密钥 Hex（AES / DES / SM4），生产环境务必修改
+    key: ""
+    # 非对称密钥 Hex（RSA / SM2）
+    public-key: ""
+    private-key: ""
+    # Advice 执行顺序，越小越先
+    order: 0

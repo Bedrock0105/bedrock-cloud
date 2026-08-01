@@ -403,6 +403,27 @@ CREATE TABLE `bedrock_ai_vector_db`  (
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '向量数据库配置表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
+-- Table structure for bedrock_ai_cs_config
+-- ----------------------------
+CREATE TABLE IF NOT EXISTS `bedrock_ai_cs_config` (
+ `id` bigint(20) NOT NULL COMMENT '主键',
+ `name` varchar(100) NOT NULL COMMENT '客服名称',
+ `avatar` varchar(500) DEFAULT NULL COMMENT '客服头像',
+ `remark` varchar(500) DEFAULT NULL COMMENT '描述',
+ `system_prompt` text COMMENT '系统提示词',
+ `model_id` bigint(20) DEFAULT NULL COMMENT '默认模型 id',
+ `chat_options` text DEFAULT NULL COMMENT '对话调用配置（工具、知识库等，JSON）',
+ `status` tinyint(1) NOT NULL DEFAULT 0 COMMENT '配置状态（1=启用，0=禁用）',
+ `tenant_id` varchar(20) DEFAULT NULL COMMENT '租户id',
+ `create_time` datetime DEFAULT NULL COMMENT '创建时间',
+ `update_time` datetime DEFAULT NULL COMMENT '修改时间',
+ `create_user_id` bigint(20) DEFAULT NULL COMMENT '创建人id',
+ `update_user_id` bigint(20) DEFAULT NULL COMMENT '修改人id',
+ `is_deleted` tinyint(1) DEFAULT 0 COMMENT '是否删除',
+ PRIMARY KEY (`id`) USING BTREE,
+ UNIQUE KEY `uk_tenant_id` (`tenant_id`) USING BTREE
+) ENGINE=InnoDB COMMENT='AI 客服配置表（租户级单条）' ROW_FORMAT=Dynamic;
+-- ----------------------------
 -- Table structure for bedrock_client
 -- ----------------------------
 DROP TABLE IF EXISTS `bedrock_client`;
@@ -625,6 +646,7 @@ INSERT INTO `bedrock_dict` VALUES (1983727715897516171, 'aiChatType', '普通对
 INSERT INTO `bedrock_dict` VALUES (1983727715897516172, 'aiChatType', '图片生成', 'IMAGE', 'success', 1983727715897516170, 1, 1, NULL, '2026-07-17 00:00:00', '2026-07-17 00:00:00', 1932740993065500674, 1932740993065500674, 0);
 INSERT INTO `bedrock_dict` VALUES (1983727715897516173, 'aiChatType', '思维导图', 'MINDMAP', 'warning', 1983727715897516170, 2, 1, NULL, '2026-07-17 00:00:00', '2026-07-17 00:00:00', 1932740993065500674, 1932740993065500674, 0);
 INSERT INTO `bedrock_dict` VALUES (1983727715897516174, 'aiChatType', '文章写作', 'ARTICLE', 'info', 1983727715897516170, 3, 1, NULL, '2026-07-17 00:00:00', '2026-07-17 00:00:00', 1932740993065500674, 1932740993065500674, 0);
+INSERT INTO `bedrock_dict` VALUES (1983727715897516175, 'aiChatType', 'AI客服', 'CUSTOMER_SERVICE', 'danger', 1983727715897516170, 4, 1, NULL, '2026-07-30 00:00:00', '2026-07-30 00:00:00', 1932740993065500674, 1932740993065500674, 0);
 
 -- ----------------------------
 -- Table structure for bedrock_email_config
@@ -846,6 +868,8 @@ INSERT INTO `bedrock_menu` VALUES (1995143390566228022, 'AI创作', 'aiCreate', 
 INSERT INTO `bedrock_menu` VALUES (1995143390566228023, 'AI绘画', 'aiPainting', 1995143390566228022, '1995143390566227980,1995143390566228022,1995143390566228023', 2, 'ri:image-ai-line', 0, 'painting', '/ai/create/painting', '', NULL, 1, 0, 0, 0, 0, 0, 0, '', 1, 'AI 绘画工作台', 1932740993065500674, '2026-07-16 00:00:00', 1932740993065500674, '2026-07-16 00:00:00', 0);
 INSERT INTO `bedrock_menu` VALUES (1995143390566228024, '思维导图', 'aiMindmap', 1995143390566228022, '1995143390566227980,1995143390566228022,1995143390566228024', 2, 'ri:node-tree', 1, 'mindmap', '/ai/create/mindmap', '', NULL, 1, 0, 0, 0, 0, 0, 0, '', 1, 'AI 思维导图工作台', 1932740993065500674, '2026-07-17 00:00:00', 1932740993065500674, '2026-07-17 00:00:00', 0);
 INSERT INTO `bedrock_menu` VALUES (1995143390566228025, 'AI文章', 'aiArticle', 1995143390566228022, '1995143390566227980,1995143390566228022,1995143390566228025', 2, 'ri:article-line', 2, 'article', '/ai/create/article', '', NULL, 1, 0, 0, 0, 0, 0, 0, '', 1, 'AI 文章写作工作台', 1932740993065500674, '2026-07-17 00:00:00', 1932740993065500674, '2026-07-17 00:00:00', 0);
+INSERT INTO `bedrock_menu` VALUES (1995143390566228030, 'AI客服配置', 'aiCsConfig', 1995143390566227980, '1995143390566227980,1995143390566228030', 2, 'ri:customer-service-2-line', 10, 'cs-config', '/ai/cs-config', '', NULL, 1, 0, 0, 0, 0, 0, 0, '', 1, '租户级 AI 客服配置（单页）', 1932740993065500674, '2026-07-30 00:00:00', 1932740993065500674, '2026-07-30 00:00:00', 0);
+INSERT INTO `bedrock_menu` VALUES (1995143390566228031, '保存', 'edit', 1995143390566228030, '1995143390566227980,1995143390566228030,1995143390566228031', 3, '', 0, '', '', '', NULL, 1, 0, 0, 0, 0, 0, 0, '', 1, '按钮', 1932740993065500674, '2026-07-30 00:00:00', 1932740993065500674, '2026-07-30 00:00:00', 0);
 
 -- ----------------------------
 -- Table structure for bedrock_oss_config

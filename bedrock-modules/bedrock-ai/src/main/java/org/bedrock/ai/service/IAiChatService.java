@@ -2,6 +2,7 @@ package org.bedrock.ai.service;
 
 import org.bedrock.ai.param.send.AiArticleParam;
 import org.bedrock.ai.param.send.AiChatSendParam;
+import org.bedrock.ai.param.send.AiCsSendParam;
 import org.bedrock.ai.param.send.AiImageParam;
 import org.bedrock.ai.param.send.AiMindmapParam;
 import org.bedrock.ai.vo.AiChatSendVO;
@@ -41,5 +42,10 @@ public interface IAiChatService {
      * 文章写作（流式）。
      */
     Flux<R<AiChatSendVO>> generateArticleStream(AiArticleParam param);
+
+    /**
+     * AI 客服流式对话；{@code id} 为空时按客服配置新建会话。
+     */
+    Flux<R<AiChatSendVO>> sendCsStream(AiCsSendParam param);
 
 }

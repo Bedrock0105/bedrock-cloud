@@ -1,5 +1,6 @@
 package org.bedrock.ai.controller;
 
+import org.bedrock.common.crypto.annotation.ApiCrypto;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 import io.swagger.v3.oas.annotations.Operation;
@@ -29,6 +30,7 @@ import java.util.List;
  * 知识库文档分片控制器
  */
 @Tag(name = "知识库文档分片 控制器")
+@ApiCrypto
 @RestController
 @RequestMapping("/ai-knowledge-chunk")
 @RequiredArgsConstructor

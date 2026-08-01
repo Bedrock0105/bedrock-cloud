@@ -1,0 +1,9 @@
+# 忽略运行期数据与构建产物，避免误提交大文件
+# MySQL 数据目录
+mysql/data/
+# Redis 数据目录
+redis/data/
+# Nacos 日志
+nacos/logs/
+# 各模块复制进来的 jar（由 copy.sh 生成）
+**/jar/*.jar

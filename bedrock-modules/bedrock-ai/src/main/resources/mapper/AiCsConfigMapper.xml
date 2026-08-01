@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.bedrock.ai.mapper.AiCsConfigMapper">
+
+    <resultMap id="AiCsConfigDetailVOMap" type="org.bedrock.ai.vo.AiCsConfigDetailVO">
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="avatar" property="avatar"/>
+        <result column="remark" property="remark"/>
+        <result column="systemPrompt" property="systemPrompt"/>
+        <result column="modelId" property="modelId"/>
+        <result column="modelName" property="modelName"/>
+        <result column="status" property="status"/>
+        <result column="chat_options" property="chatOptions"
+                typeHandler="com.baomidou.mybatisplus.extension.handlers.JacksonTypeHandler"/>
+    </resultMap>
+
+    <!-- 管理端/运行时共用：按租户取唯一配置 -->
+    <select id="selectDetailByTenantId" resultMap="AiCsConfigDetailVOMap">
+        SELECT c.id,
+               c.name,
+               c.avatar,
+               c.remark,
+               c.system_prompt AS systemPrompt,
+               c.model_id      AS modelId,
+               m.model_name    AS modelName,
+               c.status,
+               c.chat_options
+        FROM bedrock_ai_cs_config c
+                 LEFT JOIN bedrock_ai_model m ON c.model_id = m.id AND m.is_deleted = 0
+        WHERE c.tenant_id = #{tenantId}
+          AND c.is_deleted = 0
+        LIMIT 1
+    </select>
+</mapper>

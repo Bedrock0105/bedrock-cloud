@@ -1,5 +1,6 @@
 package org.bedrock.system.controller;
 
+import org.bedrock.common.crypto.annotation.ApiCrypto;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 import io.swagger.v3.oas.annotations.Operation;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @Tag(name = "管理员在线 控制器")
+@ApiCrypto
 @RestController
 @RequestMapping("/admin-online")
 @RequiredArgsConstructor

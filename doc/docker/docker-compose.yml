@@ -1,0 +1,248 @@
+# ============================================================
+# Bedrock Cloud 一键编排
+# 用法：
+#   1. mvn clean package（先安装 bedrock-commons）
+#   2. sh deploy.sh base          # 启动 mysql / redis / nacos
+#   3. 导入 nacos/config/application-dev.yml（见该文件头注释）
+#   4. sh deploy.sh copy && sh deploy.sh build && sh deploy.sh modules
+# 网络：bedrock-net（容器间用服务名互访）
+# ============================================================
+
+services:
+  # -------------------- 基础中间件：MySQL --------------------
+  # 首次空数据目录启动时，自动执行 ./mysql/db 下 01/02 初始化 SQL
+  mysql:
+    container_name: bedrock-mysql
+    build:
+      context: ./mysql
+    # 环境变量：root 密码、默认库名
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-root}
+      MYSQL_DATABASE: ${MYSQL_DATABASE:-bedrock}
+      TZ: Asia/Shanghai
+    # 端口：宿主机 3306 -> 容器 3306
+    ports:
+      - "3306:3306"
+    volumes:
+      # 数据持久化（仅空目录时会跑 initdb）
+      - ./mysql/data:/var/lib/mysql
+      # 初始化脚本：01-bedrock.sql、02-bedrock-ai.sql
+      - ./mysql/db:/docker-entrypoint-initdb.d
+    networks:
+      - bedrock-net
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "-uroot", "-p${MYSQL_ROOT_PASSWORD:-root}"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  # -------------------- 基础中间件：Redis --------------------
+  redis:
+    container_name: bedrock-redis
+    build:
+      context: ./redis
+    # 端口：宿主机 6379 -> 容器 6379
+    ports:
+      - "6379:6379"
+    volumes:
+      # 数据持久化（AOF）
+      - ./redis/data:/data
+    networks:
+      - bedrock-net
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "redis-cli", "-a", "123456", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # -------------------- 基础中间件：Nacos --------------------
+  # standalone 内嵌存储；控制台映射 18080 避免与 gateway 8080 冲突
+  nacos:
+    container_name: bedrock-nacos
+    build:
+      context: ./nacos
+    environment:
+      MODE: standalone
+      PREFER_HOST_MODE: hostname
+      # Nacos 3.x 鉴权（见 .env）
+      NACOS_AUTH_TOKEN: ${NACOS_AUTH_TOKEN}
+      NACOS_AUTH_IDENTITY_KEY: ${NACOS_AUTH_IDENTITY_KEY}
+      NACOS_AUTH_IDENTITY_VALUE: ${NACOS_AUTH_IDENTITY_VALUE}
+      TZ: Asia/Shanghai
+    ports:
+      # 配置/发现 API
+      - "8848:8848"
+      - "9848:9848"
+      # 控制台 UI（容器内 8080）
+      - "18080:8080"
+    volumes:
+      - ./nacos/logs:/home/nacos/logs
+    networks:
+      - bedrock-net
+    restart: unless-stopped
+    # 可选依赖：等 MySQL 健康后再起（业务库初始化完成后再配 Nacos 更稳）
+    depends_on:
+      mysql:
+        condition: service_healthy
+
+  # -------------------- 业务：网关 --------------------
+  bedrock-gateway:
+    container_name: bedrock-gateway
+    build:
+      context: ./bedrock-gateway
+    environment:
+      SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE:-dev}
+      NACOS_ADDR: ${NACOS_ADDR:-nacos:8848}
+      JAVA_OPTS: ${JAVA_OPTS:--Xms512m -Xmx512m}
+      TZ: Asia/Shanghai
+    ports:
+      - "8080:8080"
+    networks:
+      - bedrock-net
+    restart: unless-stopped
+    depends_on:
+      - nacos
+      - redis
+
+  # -------------------- 业务：认证 --------------------
+  bedrock-auth:
+    container_name: bedrock-auth
+    build:
+      context: ./bedrock-auth
+    environment:
+      SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE:-dev}
+      NACOS_ADDR: ${NACOS_ADDR:-nacos:8848}
+      JAVA_OPTS: ${JAVA_OPTS:--Xms512m -Xmx512m}
+      TZ: Asia/Shanghai
+    ports:
+      - "8081:8081"
+    networks:
+      - bedrock-net
+    restart: unless-stopped
+    depends_on:
+      - nacos
+      - redis
+      - mysql
+
+  # -------------------- 业务：系统 --------------------
+  bedrock-system:
+    container_name: bedrock-system
+    build:
+      context: ./bedrock-system
+    environment:
+      SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE:-dev}
+      NACOS_ADDR: ${NACOS_ADDR:-nacos:8848}
+      JAVA_OPTS: ${JAVA_OPTS:--Xms512m -Xmx512m}
+      TZ: Asia/Shanghai
+    ports:
+      - "8082:8082"
+    networks:
+      - bedrock-net
+    restart: unless-stopped
+    depends_on:
+      - nacos
+      - redis
+      - mysql
+
+  # -------------------- 业务：资源 --------------------
+  bedrock-resource:
+    container_name: bedrock-resource
+    build:
+      context: ./bedrock-resource
+    environment:
+      SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE:-dev}
+      NACOS_ADDR: ${NACOS_ADDR:-nacos:8848}
+      JAVA_OPTS: ${JAVA_OPTS:--Xms512m -Xmx512m}
+      TZ: Asia/Shanghai
+    ports:
+      - "8083:8083"
+    networks:
+      - bedrock-net
+    restart: unless-stopped
+    depends_on:
+      - nacos
+      - redis
+      - mysql
+
+  # -------------------- 业务：日志 --------------------
+  bedrock-log:
+    container_name: bedrock-log
+    build:
+      context: ./bedrock-log
+    environment:
+      SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE:-dev}
+      NACOS_ADDR: ${NACOS_ADDR:-nacos:8848}
+      JAVA_OPTS: ${JAVA_OPTS:--Xms512m -Xmx512m}
+      TZ: Asia/Shanghai
+    ports:
+      - "8084:8084"
+    networks:
+      - bedrock-net
+    restart: unless-stopped
+    depends_on:
+      - nacos
+      - redis
+      - mysql
+
+  # -------------------- 业务：AI --------------------
+  bedrock-ai:
+    container_name: bedrock-ai
+    build:
+      context: ./bedrock-ai
+    environment:
+      SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE:-dev}
+      NACOS_ADDR: ${NACOS_ADDR:-nacos:8848}
+      # AI 模块内存可适当加大
+      JAVA_OPTS: ${JAVA_OPTS:--Xms512m -Xmx1024m}
+      TZ: Asia/Shanghai
+    ports:
+      - "8085:8085"
+    networks:
+      - bedrock-net
+    restart: unless-stopped
+    depends_on:
+      - nacos
+      - redis
+      - mysql
+
+  # -------------------- 业务：WebSocket --------------------
+  bedrock-websocket:
+    container_name: bedrock-websocket
+    build:
+      context: ./bedrock-websocket
+    environment:
+      SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE:-dev}
+      NACOS_ADDR: ${NACOS_ADDR:-nacos:8848}
+      JAVA_OPTS: ${JAVA_OPTS:--Xms512m -Xmx512m}
+      TZ: Asia/Shanghai
+    ports:
+      - "8089:8089"
+    networks:
+      - bedrock-net
+    restart: unless-stopped
+    depends_on:
+      - nacos
+      - redis
+
+  # -------------------- 入口：Nginx --------------------
+  # 静态资源 + /api 反代网关 + /websocket 反代
+  nginx:
+    container_name: bedrock-nginx
+    build:
+      context: ./nginx
+    ports:
+      - "80:80"
+    networks:
+      - bedrock-net
+    restart: unless-stopped
+    depends_on:
+      - bedrock-gateway
+      - bedrock-websocket
+
+# -------------------- 自定义网络 --------------------
+networks:
+  bedrock-net:
+    driver: bridge
+    name: bedrock-net

@@ -1,5 +1,6 @@
 package org.bedrock.resource.controller;
 
+import org.bedrock.common.crypto.annotation.ApiCrypto;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 import io.swagger.v3.oas.annotations.Operation;
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @Tag(name = "sms配置 控制器")
+@ApiCrypto
 @RestController
 @RequestMapping("/sms-config")
 @RequiredArgsConstructor

@@ -1,5 +1,7 @@
 package org.bedrock.ai.controller;
 
+import org.bedrock.common.crypto.annotation.ApiCrypto;
+import org.bedrock.common.crypto.annotation.ApiExcludeCrypto;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 import io.swagger.v3.oas.annotations.Operation;
@@ -12,6 +14,7 @@ import org.bedrock.ai.param.send.AiArticleParam;
 import org.bedrock.ai.param.AiChatRecordAdminListParam;
 import org.bedrock.ai.param.AiChatRecordEditParam;
 import org.bedrock.ai.param.send.AiChatSendParam;
+import org.bedrock.ai.param.send.AiCsSendParam;
 import org.bedrock.ai.param.send.AiImageParam;
 import org.bedrock.ai.param.send.AiMindmapParam;
 import org.bedrock.ai.service.IAiChatRecordService;
@@ -28,6 +31,7 @@ import reactor.core.publisher.Flux;
 import java.util.List;
 
 @Tag(name = "AI聊天记录 控制器")
+@ApiCrypto
 @RestController
 @RequestMapping("/ai-chat-record")
 @RequiredArgsConstructor
@@ -41,7 +45,7 @@ public class AiChatRecordController extends BaseController {
     @GetMapping("/list")
     @ApiOperationSupport(order = 1)
     public R<List<AiChatRecordListVO>> list(
-            @Parameter(description = "会话类型：CHAT / IMAGE / MINDMAP / ARTICLE，默认 CHAT", name = "chatType",
+            @Parameter(description = "会话类型：CHAT / IMAGE / MINDMAP / ARTICLE / CUSTOMER_SERVICE，默认 CHAT", name = "chatType",
                     in = ParameterIn.QUERY) AiChatTypeEnum chatType) {
         return success(aiChatRecordService.selectChatRecordList(chatType));
     }
@@ -110,29 +114,40 @@ public class AiChatRecordController extends BaseController {
     }
 
     @Operation(summary = "流式聊天")
+    @ApiExcludeCrypto
     @PostMapping(value = "/send-char-stream", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     @ApiOperationSupport(order = 10)
     public Flux<R<AiChatSendVO>> sendCharStream(@RequestBody AiChatSendParam param) {
         return aiChatService.sendCharStream(param);
     }
 
+    @Operation(summary = "AI 客服流式聊天（id 为空则按客服配置新建会话）")
+    @ApiExcludeCrypto
+    @PostMapping(value = "/send-cs-stream", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+    @ApiOperationSupport(order = 11)
+    public Flux<R<AiChatSendVO>> sendCsStream(@RequestBody AiCsSendParam param) {
+        return aiChatService.sendCsStream(param);
+    }
+
     @Operation(summary = "图片生成")
     @PostMapping("/generate-image")
-    @ApiOperationSupport(order = 11)
+    @ApiOperationSupport(order = 12)
     public R<AiImageResultVO> generateImage(@RequestBody AiImageParam param) {
         return success(aiChatService.generateImage(param));
     }
 
     @Operation(summary = "思维导图生成（流式）")
+    @ApiExcludeCrypto
     @PostMapping(value = "/generate-mindmap-stream", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
-    @ApiOperationSupport(order = 12)
+    @ApiOperationSupport(order = 13)
     public Flux<R<AiChatSendVO>> generateMindmapStream(@RequestBody AiMindmapParam param) {
         return aiChatService.generateMindmapStream(param);
     }
 
     @Operation(summary = "文章写作（流式）")
+    @ApiExcludeCrypto
     @PostMapping(value = "/generate-article-stream", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
-    @ApiOperationSupport(order = 13)
+    @ApiOperationSupport(order = 14)
     public Flux<R<AiChatSendVO>> generateArticleStream(@RequestBody AiArticleParam param) {
         return aiChatService.generateArticleStream(param);
     }

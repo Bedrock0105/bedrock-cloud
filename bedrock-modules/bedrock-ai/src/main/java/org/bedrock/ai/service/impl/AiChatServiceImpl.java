@@ -12,17 +12,16 @@ import org.bedrock.ai.enums.AiChatTypeEnum;
 import org.bedrock.ai.enums.AiErrorEnum;
 import org.bedrock.ai.param.send.AiArticleParam;
 import org.bedrock.ai.param.send.AiChatSendParam;
+import org.bedrock.ai.param.send.AiCsSendParam;
 import org.bedrock.ai.param.send.AiImageParam;
 import org.bedrock.ai.param.send.AiMindmapParam;
 import org.bedrock.ai.service.IAiChatMessageService;
 import org.bedrock.ai.service.IAiChatRecordService;
 import org.bedrock.ai.service.IAiChatService;
+import org.bedrock.ai.service.IAiCsConfigService;
 import org.bedrock.ai.service.IAiModelService;
-import org.bedrock.ai.vo.AiChatRecordDetailVO;
-import org.bedrock.ai.vo.AiChatSendVO;
-import org.bedrock.ai.vo.AiImageResultVO;
+import org.bedrock.ai.vo.*;
 import org.bedrock.ai.vo.AiImageResultVO.AiImageItemVO;
-import org.bedrock.ai.vo.AiModelCheckVO;
 import org.bedrock.common.mybatisplus.constant.BedrockDBConstant;
 import org.springframework.ai.chat.messages.MessageType;
 import org.bedrock.common.ai.advisor.ChatHistoryAdvisor;
@@ -76,6 +75,8 @@ public class AiChatServiceImpl implements IAiChatService {
     private final IAiChatRecordService aiChatRecordService;
 
     private final IAiChatMessageService aiChatMessageService;
+
+    private final IAiCsConfigService aiCsConfigService;
 
     private final AiChatKit chatKit;
 
@@ -138,6 +139,30 @@ public class AiChatServiceImpl implements IAiChatService {
         ChatClient chatClient = aiModelService.getChatClient(modelCheckVO);
         String userContent = buildArticleUserContent(param);
         ChatClient.ChatClientRequestSpec requestSpec = buildTextPrompt(chatClient, userContent, chatRecord, modelCheckVO);
+        return requestSpec.stream()
+                .content()
+                .map(chunk -> R.success(buildSendVO(chatRecord, modelCheckVO, chunk)));
+    }
+
+    /**
+     * AI 客服流式对话：独立入口，与普通聊天隔离；无会话 id 时按客服配置新建。
+     */
+    @Override
+    public Flux<R<AiChatSendVO>> sendCsStream(AiCsSendParam param) {
+        if (StringUtil.isBlank(param.getContent())) {
+            throw new ServiceException(AiErrorEnum.CHAT_CONTENT_EMPTY.getCode(), AiErrorEnum.CHAT_CONTENT_EMPTY.getMessage());
+        }
+        AiCsConfigDetailVO cs = aiCsConfigService.requireEnabledDetail(AuthUtil.getTenantId());
+        if (!cs.isEnabled()) {
+            return Flux.just(R.success(AiChatSendVO.builder()
+                    .content(AiErrorEnum.CS_CONFIG_DISABLED.getMessage())
+                    .build()));
+        }
+        AiModelCheckVO modelCheckVO = aiModelService.checkAiModel(cs.getModelId());
+        AiChatRecordDetailVO chatRecord = resolveCsRecord(param, cs, modelCheckVO);
+        ChatClient chatClient = aiModelService.getChatClient(modelCheckVO);
+        ChatClient.ChatClientRequestSpec requestSpec = buildTextPrompt(
+                chatClient, param.getContent(), chatRecord, modelCheckVO, param.getAttachments());
         return requestSpec.stream()
                 .content()
                 .map(chunk -> R.success(buildSendVO(chatRecord, modelCheckVO, chunk)));
@@ -424,6 +449,32 @@ public class AiChatServiceImpl implements IAiChatService {
             aiChatRecordService.changeChatRecordModel(param.getId(), param.getModelId());
             chatRecord.setModelId(param.getModelId());
         }
+        return chatRecord;
+    }
+
+    /**
+     * 解析或创建客服会话：无 id 走客服配置建 CUSTOMER_SERVICE；有 id 则加载会话详情。
+     */
+    private AiChatRecordDetailVO resolveCsRecord(AiCsSendParam param, AiCsConfigDetailVO cs, AiModelCheckVO modelCheckVO) {
+        if (param.getId() == null) {
+            AiChatRecordDetailVO chatRecord = aiChatRecordService.createAndSaveChatRecord(
+                    modelCheckVO, buildTitle(param.getContent()), cs.getSystemPrompt(),
+                    null, cs.getChatOptions(), AiChatTypeEnum.CUSTOMER_SERVICE);
+            param.setId(chatRecord.getId());
+            return chatRecord;
+        }
+        AiChatRecordDetailVO chatRecord = aiChatRecordService.detail(param.getId());
+        if (chatRecord == null) {
+            throw new ServiceException(AiErrorEnum.CHAT_RECORD_NOT_FOUND.getCode(),
+                    AiErrorEnum.CHAT_RECORD_NOT_FOUND.getMessage());
+        }
+        chatRecord.setChatOptions(cs.getChatOptions());
+        chatRecord.getChatOptions().setMaxTokens(modelCheckVO.getMaxTokens());
+        chatRecord.getChatOptions().setMaxMessages(modelCheckVO.getMaxMessages());
+        chatRecord.getChatOptions().setTemperature(modelCheckVO.getTemperature());
+        chatRecord.setSystemPrompt(cs.getSystemPrompt());
+        chatRecord.setModel(modelCheckVO.getModel());
+        chatRecord.setModelName(modelCheckVO.getModelName());
         return chatRecord;
     }
 

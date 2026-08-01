@@ -11,6 +11,7 @@ public enum AiChatTypeEnum {
     IMAGE("图片生成"),
     MINDMAP("思维导图"),
     ARTICLE("文章写作"),
+    CUSTOMER_SERVICE("AI客服"),
     ;
 
     private final String value;

@@ -1,5 +1,6 @@
 package org.bedrock.resource.controller;
 
+import org.bedrock.common.crypto.annotation.ApiCrypto;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @Tag(name = "短信发送")
 @Slf4j
+@ApiCrypto
 @RestController
 @RequestMapping("/sms")
 @RequiredArgsConstructor

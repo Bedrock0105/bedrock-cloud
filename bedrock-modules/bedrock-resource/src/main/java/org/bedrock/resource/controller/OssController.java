@@ -1,5 +1,7 @@
 package org.bedrock.resource.controller;
 
+import org.bedrock.common.crypto.annotation.ApiCrypto;
+import org.bedrock.common.crypto.annotation.ApiExcludeCrypto;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -21,6 +23,7 @@ import java.io.InputStream;
 
 @Tag(name = "文件上传")
 @Slf4j
+@ApiCrypto
 @RestController
 @RequestMapping("/oss")
 @RequiredArgsConstructor
@@ -71,6 +74,7 @@ public class OssController extends BaseController {
     /**
      * 下载文件
      */
+    @ApiExcludeCrypto
     @GetMapping(value = "/download-file")
     @Operation(summary = "下载文件")
     @ApiOperationSupport(order = 5)
@@ -86,6 +90,7 @@ public class OssController extends BaseController {
     /**
      * 下载文件
      */
+    @ApiExcludeCrypto
     @GetMapping(value = "/download-file/bucket")
     @Operation(summary = "下载文件")
     @ApiOperationSupport(order = 6)
@@ -102,6 +107,7 @@ public class OssController extends BaseController {
     /**
      * 下载文件
      */
+    @ApiExcludeCrypto
     @GetMapping(value = "/download-file/bucket/custom-name")
     @Operation(summary = "下载文件")
     @ApiOperationSupport(order = 7)
@@ -119,6 +125,7 @@ public class OssController extends BaseController {
     /**
      * 下载文件
      */
+    @ApiExcludeCrypto
     @GetMapping(value = "/download-file/custom-name")
     @Operation(summary = "下载文件")
     @ApiOperationSupport(order = 8)
@@ -132,6 +139,7 @@ public class OssController extends BaseController {
         downloadFile(inputStream, fileName);
     }
 
+    @ApiExcludeCrypto
     @PostMapping(value = "/upload-file")
     @Operation(summary = "上传文件")
     @ApiOperationSupport(order = 9)

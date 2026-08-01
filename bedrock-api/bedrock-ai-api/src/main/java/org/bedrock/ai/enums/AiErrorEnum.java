@@ -1,12 +1,13 @@
 package org.bedrock.ai.enums;
 
 import lombok.Getter;
+import org.bedrock.common.code.support.ResultCode;
 
 /**
  * AI 模块业务错误码
  */
 @Getter
-public enum AiErrorEnum {
+public enum AiErrorEnum implements ResultCode {
 
     /** API Key 名称已存在 */
     KEY_NAME_ALREADY_EXISTS(13001, "API Key 名称已存在"),
@@ -68,13 +69,17 @@ public enum AiErrorEnum {
     IMAGE_MODEL_TYPE_INVALID(13029, "关联模型不是图片类型"),
     /** 图片提示词不能为空 */
     IMAGE_CONTENT_EMPTY(13030, "图片提示词不能为空"),
+    /** AI 客服未配置或未启用 */
+    CS_CONFIG_DISABLED(13031, "AI 客服未配置或未启用"),
+    /** AI 客服必须关联知识库 */
+    CS_KNOWLEDGE_REQUIRED(13032, "AI 客服必须关联至少一个知识库"),
     ;
 
-    private final Integer code;
+    private final int code;
 
     private final String message;
 
-    AiErrorEnum(Integer code, String message) {
+    AiErrorEnum(int code, String message) {
         this.code = code;
         this.message = message;
     }

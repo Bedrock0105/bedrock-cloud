@@ -1,5 +1,6 @@
 package org.bedrock.ai.controller;
 
+import org.bedrock.common.crypto.annotation.ApiCrypto;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 import io.swagger.v3.oas.annotations.Operation;
@@ -30,6 +31,7 @@ import java.util.List;
  * <p>提供知识库的增删改查与启停管理</p>
  */
 @Tag(name = "AI 知识库 控制器")
+@ApiCrypto
 @RestController
 @RequestMapping("/ai-knowledge")
 @RequiredArgsConstructor

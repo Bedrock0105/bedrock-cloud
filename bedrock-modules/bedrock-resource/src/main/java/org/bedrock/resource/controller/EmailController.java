@@ -1,5 +1,7 @@
 package org.bedrock.resource.controller;
 
+import org.bedrock.common.crypto.annotation.ApiCrypto;
+import org.bedrock.common.crypto.annotation.ApiExcludeCrypto;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
@@ -19,6 +21,7 @@ import java.util.Collections;
  */
 @Tag(name = "邮件发送")
 @Slf4j
+@ApiCrypto
 @RestController
 @RequestMapping("/email")
 @RequiredArgsConstructor
@@ -50,6 +53,7 @@ public class EmailController extends BaseController {
      * 带附件
      */
     @SneakyThrows
+    @ApiExcludeCrypto
     @PostMapping("/send-mail-attachment")
     public R sendMail(@RequestPart("emailSend") EmailSendAttachment emailSend, @RequestPart("file") MultipartFile file) {
         emailSend.setAttachments(Collections.singletonList(new AttachmentDataSource(file.getOriginalFilename(),

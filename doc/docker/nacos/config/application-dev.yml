@@ -1,0 +1,52 @@
+# ============================================================
+# Docker 环境专用 Nacos 共享配置（application-dev.yml）
+# 与 doc/nacos/application-dev.yml 的差异：
+#   - MySQL 主机改为服务名 mysql（Docker 网络 DNS）
+#   - Redis 主机改为服务名 redis
+# 使用方式：
+#   1. 启动 base 中间件后打开 http://localhost:18080/nacos （账号 nacos/nacos）
+#   2. 创建命名空间 ID：790c0609-a49f-4fef-b56b-88788f7292bb（与 NacosConstant.DEV 一致）
+#   3. 在该命名空间导入本文件，DataId 按项目约定（如 application-dev.yml）
+# ============================================================
+
+# 激活 Sentinel 对 Feign 的支持
+feign:
+  sentinel:
+    enabled: true
+  okhttp:
+    enabled: true
+  httpclient:
+    enabled: false
+
+# 数据源 / Redis 等共享配置
+spring:
+  cloud:
+    sentinel:
+      eager: true
+  datasource:
+    # Docker 网络内通过服务名 mysql 访问，库名 bedrock
+    url: jdbc:mysql://mysql:3306/bedrock?useSSL=false&useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&transformedBitIsBoolean=true&tinyInt1isBit=false&allowMultiQueries=true&serverTimezone=GMT%2B8&allowPublicKeyRetrieval=true
+    username: root
+    password: root
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  data:
+    redis:
+      # Docker 网络内通过服务名 redis 访问
+      host: redis
+      port: 6379
+      password: 123456
+      database: 0
+      ssl:
+        enabled: false
+
+bedrock:
+  security:
+    ignore-urls:
+      - /doc.html
+      - /webjars/**
+      - /v3/api-docs/**
+      - /v3/api-docs
+      - /oauth/**
+  mybatis-plus:
+    ignore-table:
+      - bedrock_admin_online

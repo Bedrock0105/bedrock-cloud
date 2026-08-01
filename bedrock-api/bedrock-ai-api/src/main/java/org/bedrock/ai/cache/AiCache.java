@@ -28,4 +28,9 @@ public final class AiCache {
      */
     public static final String CHAT_RECORD_DETAIL_ID = "chat:record:detail:id:";
 
+    /**
+     * AI 客服配置（按租户）key，后缀为 tenantId
+     */
+    public static final String CS_CONFIG_TENANT_ID = "cs:config:tenant:id:";
+
 }
