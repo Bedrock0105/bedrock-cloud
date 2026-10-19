@@ -1,9 +1,11 @@
 package org.bedrock.common.constant;
 
 import org.bedrock.common.code.constant.EnvConstant;
+import org.bedrock.common.code.util.CollectionUtil;
 import org.bedrock.common.code.util.StringUtil;
 
 import java.io.File;
+import java.util.Map;
 
 public interface SentinelConstant {
 
@@ -62,6 +64,9 @@ public interface SentinelConstant {
             if (StringUtil.isBlank(logDir)) {
                 logDir = System.getProperty("user.dir") + File.separator + "logs" + File.separator + "csp" + File.separator;
             }
+            Map<String, String> env = System.getenv();
+            address = CollectionUtil.getNonBlank(env, address, "SENTINEL_ADDRESS");
+            logDir = CollectionUtil.getNonBlank(env, logDir, "SENTINEL_LOG_DIR");
         }
     }
 }

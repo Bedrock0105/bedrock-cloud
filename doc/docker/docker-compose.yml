@@ -88,13 +88,19 @@ services:
         condition: service_healthy
 
   # -------------------- 业务：网关 --------------------
+  # Nacos / Sentinel 凭环境变量注入，与 Dockerfile ENV 一致（勿再用 NACOS_ADDR）
   bedrock-gateway:
     container_name: bedrock-gateway
     build:
       context: ./bedrock-gateway
     environment:
       SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE:-dev}
-      NACOS_ADDR: ${NACOS_ADDR:-nacos:8848}
+      NACOS_ADDRESS: ${NACOS_ADDRESS:-nacos:8848}
+      NACOS_USERNAME: ${NACOS_USERNAME:-nacos}
+      NACOS_PASSWORD: ${NACOS_PASSWORD:-nacos}
+      NACOS_NAMESPACE: ${NACOS_NAMESPACE:-790c0609-a49f-4fef-b56b-88788f7292bb}
+      SENTINEL_ADDRESS: ${SENTINEL_ADDRESS:-127.0.0.1:7080}
+      SENTINEL_LOG_DIR: ${SENTINEL_LOG_DIR:-/home/bedrock/logs/csp/}
       JAVA_OPTS: ${JAVA_OPTS:--Xms512m -Xmx512m}
       TZ: Asia/Shanghai
     ports:
@@ -107,13 +113,19 @@ services:
       - redis
 
   # -------------------- 业务：认证 --------------------
+  # Nacos / Sentinel 凭环境变量注入，与 Dockerfile ENV 一致
   bedrock-auth:
     container_name: bedrock-auth
     build:
       context: ./bedrock-auth
     environment:
       SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE:-dev}
-      NACOS_ADDR: ${NACOS_ADDR:-nacos:8848}
+      NACOS_ADDRESS: ${NACOS_ADDRESS:-nacos:8848}
+      NACOS_USERNAME: ${NACOS_USERNAME:-nacos}
+      NACOS_PASSWORD: ${NACOS_PASSWORD:-nacos}
+      NACOS_NAMESPACE: ${NACOS_NAMESPACE:-790c0609-a49f-4fef-b56b-88788f7292bb}
+      SENTINEL_ADDRESS: ${SENTINEL_ADDRESS:-127.0.0.1:7080}
+      SENTINEL_LOG_DIR: ${SENTINEL_LOG_DIR:-/home/bedrock/logs/csp/}
       JAVA_OPTS: ${JAVA_OPTS:--Xms512m -Xmx512m}
       TZ: Asia/Shanghai
     ports:
@@ -127,13 +139,19 @@ services:
       - mysql
 
   # -------------------- 业务：系统 --------------------
+  # Nacos / Sentinel 凭环境变量注入，与 Dockerfile ENV 一致
   bedrock-system:
     container_name: bedrock-system
     build:
       context: ./bedrock-system
     environment:
       SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE:-dev}
-      NACOS_ADDR: ${NACOS_ADDR:-nacos:8848}
+      NACOS_ADDRESS: ${NACOS_ADDRESS:-nacos:8848}
+      NACOS_USERNAME: ${NACOS_USERNAME:-nacos}
+      NACOS_PASSWORD: ${NACOS_PASSWORD:-nacos}
+      NACOS_NAMESPACE: ${NACOS_NAMESPACE:-790c0609-a49f-4fef-b56b-88788f7292bb}
+      SENTINEL_ADDRESS: ${SENTINEL_ADDRESS:-127.0.0.1:7080}
+      SENTINEL_LOG_DIR: ${SENTINEL_LOG_DIR:-/home/bedrock/logs/csp/}
       JAVA_OPTS: ${JAVA_OPTS:--Xms512m -Xmx512m}
       TZ: Asia/Shanghai
     ports:
@@ -147,13 +165,19 @@ services:
       - mysql
 
   # -------------------- 业务：资源 --------------------
+  # Nacos / Sentinel 凭环境变量注入，与 Dockerfile ENV 一致
   bedrock-resource:
     container_name: bedrock-resource
     build:
       context: ./bedrock-resource
     environment:
       SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE:-dev}
-      NACOS_ADDR: ${NACOS_ADDR:-nacos:8848}
+      NACOS_ADDRESS: ${NACOS_ADDRESS:-nacos:8848}
+      NACOS_USERNAME: ${NACOS_USERNAME:-nacos}
+      NACOS_PASSWORD: ${NACOS_PASSWORD:-nacos}
+      NACOS_NAMESPACE: ${NACOS_NAMESPACE:-790c0609-a49f-4fef-b56b-88788f7292bb}
+      SENTINEL_ADDRESS: ${SENTINEL_ADDRESS:-127.0.0.1:7080}
+      SENTINEL_LOG_DIR: ${SENTINEL_LOG_DIR:-/home/bedrock/logs/csp/}
       JAVA_OPTS: ${JAVA_OPTS:--Xms512m -Xmx512m}
       TZ: Asia/Shanghai
     ports:
@@ -167,13 +191,19 @@ services:
       - mysql
 
   # -------------------- 业务：日志 --------------------
+  # Nacos / Sentinel 凭环境变量注入，与 Dockerfile ENV 一致
   bedrock-log:
     container_name: bedrock-log
     build:
       context: ./bedrock-log
     environment:
       SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE:-dev}
-      NACOS_ADDR: ${NACOS_ADDR:-nacos:8848}
+      NACOS_ADDRESS: ${NACOS_ADDRESS:-nacos:8848}
+      NACOS_USERNAME: ${NACOS_USERNAME:-nacos}
+      NACOS_PASSWORD: ${NACOS_PASSWORD:-nacos}
+      NACOS_NAMESPACE: ${NACOS_NAMESPACE:-790c0609-a49f-4fef-b56b-88788f7292bb}
+      SENTINEL_ADDRESS: ${SENTINEL_ADDRESS:-127.0.0.1:7080}
+      SENTINEL_LOG_DIR: ${SENTINEL_LOG_DIR:-/home/bedrock/logs/csp/}
       JAVA_OPTS: ${JAVA_OPTS:--Xms512m -Xmx512m}
       TZ: Asia/Shanghai
     ports:
@@ -187,13 +217,19 @@ services:
       - mysql
 
   # -------------------- 业务：AI --------------------
+  # Nacos / Sentinel 凭环境变量注入，与 Dockerfile ENV 一致
   bedrock-ai:
     container_name: bedrock-ai
     build:
       context: ./bedrock-ai
     environment:
       SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE:-dev}
-      NACOS_ADDR: ${NACOS_ADDR:-nacos:8848}
+      NACOS_ADDRESS: ${NACOS_ADDRESS:-nacos:8848}
+      NACOS_USERNAME: ${NACOS_USERNAME:-nacos}
+      NACOS_PASSWORD: ${NACOS_PASSWORD:-nacos}
+      NACOS_NAMESPACE: ${NACOS_NAMESPACE:-790c0609-a49f-4fef-b56b-88788f7292bb}
+      SENTINEL_ADDRESS: ${SENTINEL_ADDRESS:-127.0.0.1:7080}
+      SENTINEL_LOG_DIR: ${SENTINEL_LOG_DIR:-/home/bedrock/logs/csp/}
       # AI 模块内存可适当加大
       JAVA_OPTS: ${JAVA_OPTS:--Xms512m -Xmx1024m}
       TZ: Asia/Shanghai
@@ -208,13 +244,19 @@ services:
       - mysql
 
   # -------------------- 业务：WebSocket --------------------
+  # Nacos / Sentinel 凭环境变量注入，与 Dockerfile ENV 一致
   bedrock-websocket:
     container_name: bedrock-websocket
     build:
       context: ./bedrock-websocket
     environment:
       SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE:-dev}
-      NACOS_ADDR: ${NACOS_ADDR:-nacos:8848}
+      NACOS_ADDRESS: ${NACOS_ADDRESS:-nacos:8848}
+      NACOS_USERNAME: ${NACOS_USERNAME:-nacos}
+      NACOS_PASSWORD: ${NACOS_PASSWORD:-nacos}
+      NACOS_NAMESPACE: ${NACOS_NAMESPACE:-790c0609-a49f-4fef-b56b-88788f7292bb}
+      SENTINEL_ADDRESS: ${SENTINEL_ADDRESS:-127.0.0.1:7080}
+      SENTINEL_LOG_DIR: ${SENTINEL_LOG_DIR:-/home/bedrock/logs/csp/}
       JAVA_OPTS: ${JAVA_OPTS:--Xms512m -Xmx512m}
       TZ: Asia/Shanghai
     ports:

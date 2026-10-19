@@ -1,0 +1,41 @@
+# ============================================================
+# Bedrock 业务模块通用 systemd 单元模板（Type=forking）
+#
+# 安装步骤：
+#   1. 将本文件复制为 /etc/systemd/system/<模块名>.service
+#      例：cp app.service /etc/systemd/system/bedrock-gateway.service
+#   2. 按下方「各模块需修改」改 Description / 路径 / PID 文件名
+#   3. 确保同目录已部署 jar 与 app.sh，且 app.sh 内 APP_NAME 与 jar 一致
+#   4. systemctl daemon-reload
+#   5. systemctl enable --now bedrock-gateway
+#
+# 各模块需修改的项：
+#   - 单元文件名：bedrock-gateway.service -> bedrock-auth.service 等
+#   - Description：服务描述
+#   - WorkingDirectory：jar 与 app.sh 所在绝对路径
+#   - PIDFile：须与 app.sh 写出的 ${APP_NAME%.jar}.pid 一致
+#   - ExecStart / ExecStop：app.sh 的绝对路径
+#
+# 说明：app.sh start 使用 nohup 后台启动后立即退出，必须用 Type=forking
+#       并指定 PIDFile，不能按 Type=simple 直接跑 app.sh start。
+# ============================================================
+
+[Unit]
+# 【改】服务描述，例如 Bedrock Auth / Bedrock System
+Description=Bedrock Gateway
+After=network.target
+
+[Service]
+Type=forking
+# 【改】部署目录（jar、app.sh、pid、log.out 所在目录）
+WorkingDirectory=/opt/bedrock/bedrock-gateway
+# 【改】PID 文件路径，须与 app.sh 生成的文件名一致
+PIDFile=/opt/bedrock/bedrock-gateway/bedrock-gateway.pid
+# 【改】启动 / 停止脚本绝对路径
+ExecStart=/opt/bedrock/bedrock-gateway/app.sh start
+ExecStop=/opt/bedrock/bedrock-gateway/app.sh stop
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

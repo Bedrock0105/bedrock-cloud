@@ -17,14 +17,20 @@ WORKDIR /home/bedrock
 # 复制预先打包好的 jar（由 copy.sh 放入 jar/）
 COPY ./jar/bedrock-ai.jar ./app.jar
 
-# JVM 参数，可在 compose 中通过环境变量覆盖
+# JVM / profile / Nacos / Sentinel：可由 compose 覆盖；启动时由 NacosStartConfiguration、SentinelStartConfiguration 读入
+# 不再通过命令行传 --spring.profiles.active / nacos server-addr
 ENV JAVA_OPTS="-Xms512m -Xmx1024m" \
     SPRING_PROFILES_ACTIVE=dev \
-    NACOS_ADDR=nacos:8848 \
+    NACOS_ADDRESS=nacos:8848 \
+    NACOS_USERNAME=nacos \
+    NACOS_PASSWORD=nacos \
+    NACOS_NAMESPACE=790c0609-a49f-4fef-b56b-88788f7292bb \
+    SENTINEL_ADDRESS=127.0.0.1:7080 \
+    SENTINEL_LOG_DIR=/home/bedrock/logs/csp/ \
     TZ=Asia/Shanghai
 
 # 暴露服务端口
 EXPOSE 8085
 
-# 启动服务；用命令行覆盖 Nacos 地址（覆盖代码里的 127.0.0.1 默认值）
-ENTRYPOINT ["sh", "-c", "java $JAVA_OPTS -jar app.jar --spring.profiles.active=${SPRING_PROFILES_ACTIVE} --spring.cloud.nacos.config.server-addr=${NACOS_ADDR} --spring.cloud.nacos.discovery.server-addr=${NACOS_ADDR}"]
+# 仅启动 jar；profile / Nacos / Sentinel 依赖上方环境变量
+ENTRYPOINT ["sh", "-c", "java $JAVA_OPTS -jar app.jar"]

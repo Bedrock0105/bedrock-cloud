@@ -1,6 +1,9 @@
 package org.bedrock.common.constant;
 
 import org.bedrock.common.code.constant.EnvConstant;
+import org.bedrock.common.code.util.CollectionUtil;
+
+import java.util.Map;
 
 public interface NacosConstant {
 
@@ -55,17 +58,17 @@ public interface NacosConstant {
     /**
      * 生产环境Nacos访问账号
      */
-    String NACOS_PROD_USERNAME = "nacos";
+    String NACOS_PROD_USERNAME = "bedrock";
 
     /**
      * 生产环境Nacos访问密码
      */
-    String NACOS_PROD_PASSWORD = "nacos";
+    String NACOS_PROD_PASSWORD = "weewcd@!@!e#$";
 
     /**
      * 生产环境Nacos命名空间
      */
-    String NACOS_PROD_NAMESPACE = "790c0609-a49f-4fef-b56b-88788f7292bb";
+    String NACOS_PROD_NAMESPACE = "66414a1f-3fd4-42e5-9c12-9671631f0a41";
 
     /**
      * 根据启动环境获取对应的Nacos配置信息
@@ -91,5 +94,12 @@ public interface NacosConstant {
      */
     record NacosConfig(String address, String username, String password, String namespace) {
 
+        public NacosConfig {
+            Map<String, String> env = System.getenv();
+            address = CollectionUtil.getNonBlank(env, address, "NACOS_ADDRESS");
+            username = CollectionUtil.getNonBlank(env, username, "NACOS_USERNAME");
+            password = CollectionUtil.getNonBlank(env, password, "NACOS_PASSWORD");
+            namespace = CollectionUtil.getNonBlank(env, namespace, "NACOS_NAMESPACE");
+        }
     }
 }
