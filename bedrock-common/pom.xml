@@ -19,12 +19,8 @@
         </dependency>
         <!--序列化-->
         <dependency>
-            <groupId>io.protostuff</groupId>
-            <artifactId>protostuff-core</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>io.protostuff</groupId>
-            <artifactId>protostuff-runtime</artifactId>
+            <groupId>org.apache.fory</groupId>
+            <artifactId>fory-core</artifactId>
         </dependency>
         <!--生产加载文件-->
         <dependency>

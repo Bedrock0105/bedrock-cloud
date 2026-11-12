@@ -1,9 +1,12 @@
 package org.bedrock.system.excel;
 
-import cn.idev.excel.annotation.ExcelProperty;
-import cn.idev.excel.annotation.write.style.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.apache.fesod.sheet.annotation.ExcelProperty;
+import org.apache.fesod.sheet.annotation.write.style.ColumnWidth;
+import org.apache.fesod.sheet.annotation.write.style.ContentRowHeight;
+import org.apache.fesod.sheet.annotation.write.style.HeadFontStyle;
+import org.apache.fesod.sheet.annotation.write.style.HeadRowHeight;
 import org.bedrock.common.excel.annotation.ExcelContentDown;
 import org.bedrock.common.excel.annotation.ExcelConverter;
 import org.bedrock.common.excel.annotation.ExcelHeaderComment;

@@ -33,5 +33,6 @@ public class TenantPackageDetailVO {
      * 菜单id
      */
     @Schema(description = "菜单id")
-    private List<String> menuIdList;
+    @JsonSerialize(contentUsing = ToStringSerializer.class)
+    private List<Long> menuIdList;
 }

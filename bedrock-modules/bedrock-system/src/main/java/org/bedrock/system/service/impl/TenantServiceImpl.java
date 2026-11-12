@@ -88,6 +88,7 @@ public class TenantServiceImpl extends BaseServiceImpl<TenantMapper, Tenant> imp
 
     @Override
     @Caching(evict = {
+            @CacheEvict(cacheNames = CacheConstant.ADMIN_CACHE, allEntries = true),
             @CacheEvict(cacheNames = CacheConstant.SYS_CACHE, key = "'" + SystemCache.TENANT_DETAIL_ID + "'+ #param.id"),
             @CacheEvict(cacheNames = CacheConstant.SYS_CACHE, key = "'" + SystemCache.TENANT_DETAIL_TENANT_ID + "'+ #param.tenantId")
     })

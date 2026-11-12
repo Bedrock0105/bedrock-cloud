@@ -141,6 +141,9 @@ public class MenuServiceImpl extends BaseServiceImpl<MenuMapper, Menu> implement
     public List<MenuTreeVO> filterPackage(List<MenuTreeVO> menuTreeVOS) {
         TenantDetailVO tenantDetail = SystemCache.getTenantDetail(AuthUtil.getTenantId());
         TenantPackageDetailVO detail = packageService.detail(tenantDetail.getPackageId());
+        if (detail == null) {
+            return menuTreeVOS;
+        }
         return menuTreeVOS.stream()
                 .filter(menu -> detail.getMenuIdList().contains(menu.getId()))
                 .collect(Collectors.toList());

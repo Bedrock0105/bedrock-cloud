@@ -159,7 +159,7 @@ bedrock:
 
   # ---------- Redis 序列化 / Stream（redis 模块） ----------
   redis:
-    serializer: PROTOSTUFF
+    serializer: FORY
     stream:
       enabled: false
       batch-size: 10

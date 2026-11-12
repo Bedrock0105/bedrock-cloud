@@ -23,6 +23,7 @@ import org.bedrock.system.vo.TenantDetailVO;
 import org.bedrock.system.vo.TenantPackageDetailVO;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -44,7 +45,10 @@ public class TenantPackageServiceImpl extends BaseServiceImpl<TenantPackageMappe
     }
 
     @Override
-    @CacheEvict(cacheNames = CacheConstant.SYS_CACHE, key = "'" + SystemCache.TENANT_PACKAGE_DETAIL_ID + "'+ #param.id")
+    @Caching(evict = {
+            @CacheEvict(cacheNames = CacheConstant.ADMIN_CACHE, allEntries = true),
+            @CacheEvict(cacheNames = CacheConstant.SYS_CACHE, key = "'" + SystemCache.TENANT_PACKAGE_DETAIL_ID + "'+ #param.id")
+    })
     public boolean edit(TenantPackageSubmitParam param) {
         TenantPackage entity = new TenantPackage();
         entity.setId(param.getId());
@@ -66,7 +70,7 @@ public class TenantPackageServiceImpl extends BaseServiceImpl<TenantPackageMappe
         vo.setName(byId.getName());
         vo.setRemark(byId.getRemark());
         if (StringUtil.isNotBlank(byId.getMenuIds())) {
-            vo.setMenuIdList(StringUtil.toListStr(byId.getMenuIds(), StringPool.COMMA));
+            vo.setMenuIdList(NumberUtil.toListLong(byId.getMenuIds(), StringPool.COMMA));
         }
         return vo;
     }
