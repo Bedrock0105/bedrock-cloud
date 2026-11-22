@@ -135,8 +135,7 @@ public class OssController extends BaseController {
     })
     public void downloadFileCustomName(String filepath, String fileName) throws IOException {
         log.info("下载文件：filepath: {},fileName: {}", filepath, fileName);
-        InputStream inputStream = ossSupport.ossTemplate().downloadFile(filepath);
-        downloadFile(inputStream, fileName);
+        downloadFileStream(fileName, out -> ossSupport.ossTemplate().downloadFile(filepath, out));
     }
 
     @ApiExcludeCrypto

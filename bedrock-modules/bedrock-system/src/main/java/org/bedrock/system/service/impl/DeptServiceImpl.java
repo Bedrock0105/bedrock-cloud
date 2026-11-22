@@ -37,7 +37,7 @@ public class DeptServiceImpl extends BaseServiceImpl<DeptMapper, Dept> implement
     }
 
     @Override
-    @CacheEvict(cacheNames = CacheConstant.SYS_CACHE, key = "'dept:tree:all'")
+    @CacheEvict(cacheNames = CacheConstant.SYS_CACHE, key = "T(org.bedrock.common.auth.util.AuthUtil).tenantId+'dept:tree:all'")
     public boolean submit(DeptSubmitParam param) {
         if (exists(Wrappers.<Dept>lambdaQuery()
                 .eq(Dept::getDeptCode, param.getDeptCode()))) {

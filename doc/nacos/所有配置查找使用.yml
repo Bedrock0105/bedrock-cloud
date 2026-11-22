@@ -113,6 +113,16 @@ bedrock:
     secret-key: MIHwMIGoBgcqhkjOOsdsAQBMIGcAkEAKaCzo4Syrom78z3EQ5SbbB4sF7ey80etKII
     jwt-iss: github
     jwt-subject: github.com
+    # 授权码登录 / 同意 / 错误页（authentication 模块）
+    page:
+      login-view: oauth/login
+      confirm-view: oauth/confirm
+      error-view: oauth/error
+      login-url:           # 非空则 302 到外链，不再渲染内置视图
+      confirm-url:
+      error-url:
+      # 浏览器对外路径前缀（非 context-path）；网关如 /bedrock-auth，再加 nginx 如 /api/bedrock-auth
+      path-prefix: ""
 
   # ---------- 登录拦截 + 接口权限（security 模块） ----------
   security:
@@ -144,7 +154,7 @@ bedrock:
     max-limit: 1000
     optimize-join: false
 
-  # ---------- 请求日志（log 模块） ----------
+  # ---------- 请求日志 / 错误日志（log 模块） ----------
   log:
     request:
       enabled: true
@@ -156,6 +166,9 @@ bedrock:
       method-params-log: true
       method-return-log: true
       method-return-msg-log: true
+    error:
+      # 是否将兜底 Throwable 持久化为错误日志（默认 true）
+      enabled: true
 
   # ---------- Redis 序列化 / Stream（redis 模块） ----------
   redis:
@@ -192,10 +205,18 @@ bedrock:
         url: "http://xxxx"
 
   # ---------- 事件总线（code 模块，默认关闭） ----------
+  # 主机/JVM 跨服务监控需 enabled=true 且 type=REDIS（见下方 monitor）
   eventbus:
     enabled: false
-    type: LOCAL
+    type: LOCAL                 # LOCAL | REDIS；多实例互通用 REDIS
     global-topic: bedrock:eventbus:channel
+
+  # ---------- 主机 / JVM 监控（code 模块，需 EventBus + classpath 有 oshi-core） ----------
+  monitor:
+    enabled: false              # 本机采集并发布，默认 false
+    aggregate-enabled: false    # 内存汇总，默认 false；仅汇总节点（如 system）设 true
+    interval: 30s
+    topic: bedrock/monitor/host-metric
 
   # ---------- HTTP 客户端（http 模块，调用第三方 API 时使用） ----------
   http:

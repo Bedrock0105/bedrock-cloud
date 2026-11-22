@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.bedrock.ai.mapper.AiSkillFileMapper">
+
+    <select id="selectBySkillId" resultType="org.bedrock.ai.vo.AiSkillFileVO">
+        SELECT id,
+               skill_id,
+               parent_id,
+               node_type,
+               name,
+               relative_path,
+               is_text,
+               content,
+               file_url,
+               file_size,
+               file_suffix,
+               sort
+        FROM bedrock_ai_skill_file
+        WHERE skill_id = #{skillId}
+          AND is_deleted = 0
+    </select>
+</mapper>

@@ -16,6 +16,7 @@ import org.bedrock.ai.vo.AiApiKeyDetailVO;
 import org.bedrock.ai.vo.AiApiKeyListVO;
 import org.bedrock.common.ai.factory.model.AiModelFactory;
 import org.bedrock.common.ai.factory.vectorstore.VectorStoreFactory;
+import org.bedrock.common.auth.util.AuthUtil;
 import org.bedrock.common.code.constant.CacheConstant;
 import org.bedrock.common.code.util.BeanUtil;
 import org.bedrock.common.code.util.CacheUtil;
@@ -26,6 +27,7 @@ import org.bedrock.common.mybatisplus.base.BaseServiceImpl;
 import org.bedrock.common.mybatisplus.constant.BedrockDBConstant;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -113,12 +115,13 @@ public class AiApiKeyServiceImpl extends BaseServiceImpl<AiApiKeyMapper, AiApiKe
     public boolean enableStatus(Long id, Integer status) {
         AiApiKey aiApiKey = this.getById(id);
         LogRecordContext.putVariable("keyName", aiApiKey.getKeyName());
-        LogRecordContext.putVariable("status", status);
         if (BedrockDBConstant.DB_STATUS_DISABLE.equals(status)) {
             clearRelatedModelCache(id);
         }
         return this.update(Wrappers.<AiApiKey>lambdaUpdate()
                 .eq(BaseEntity::getId, id)
+                .set(BaseEntity::getUpdateTime, LocalDateTime.now())
+                .set(BaseEntity::getUpdateUserId, AuthUtil.getUserId())
                 .set(AiApiKey::getStatus, status));
     }
 

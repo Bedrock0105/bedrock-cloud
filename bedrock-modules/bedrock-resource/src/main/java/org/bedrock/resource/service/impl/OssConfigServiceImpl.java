@@ -26,7 +26,7 @@ public class OssConfigServiceImpl extends BaseServiceImpl<OssConfigMapper, OssCo
     public boolean submit(OssConfigSubmitParam param) {
         if (exists(Wrappers.<OssConfig>lambdaQuery()
                 .eq(OssConfig::getConfigCode, param.getConfigCode())
-                .eq(BaseEntity::getIsDeleted, BedrockDBConstant.DB_STATUS_NORMAL))) {
+                .eq(BaseEntity::getIsDeleted, BedrockDBConstant.DB_NOT_DELETED))) {
             throw new ServiceException(ResourceErrorEnum.THE_CODE_ALREADY_EXISTS.getCode(), ResourceErrorEnum.THE_CODE_ALREADY_EXISTS.getMessage());
         }
         OssConfig ossConfig = BeanUtil.copyProperties(param, OssConfig.class);
@@ -37,7 +37,7 @@ public class OssConfigServiceImpl extends BaseServiceImpl<OssConfigMapper, OssCo
     public boolean edit(OssConfigSubmitParam param) {
         if (exists(Wrappers.<OssConfig>lambdaQuery()
                 .eq(OssConfig::getConfigCode, param.getConfigCode())
-                .eq(BaseEntity::getIsDeleted, BedrockDBConstant.DB_STATUS_NORMAL)
+                .eq(BaseEntity::getIsDeleted, BedrockDBConstant.DB_NOT_DELETED)
                 .ne(BaseEntity::getId, param.getId()))) {
             throw new ServiceException(ResourceErrorEnum.THE_CODE_ALREADY_EXISTS.getCode(), ResourceErrorEnum.THE_CODE_ALREADY_EXISTS.getMessage());
         }

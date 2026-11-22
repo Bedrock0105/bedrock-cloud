@@ -156,7 +156,6 @@ public class AiKnowledgeChunkServiceImpl extends BaseServiceImpl<AiKnowledgeChun
                     AiErrorEnum.KNOWLEDGE_CHUNK_NOT_FOUND.getMessage());
         }
         LogRecordContext.putVariable("chunkNo", chunk.getChunkNo());
-        LogRecordContext.putVariable("status", status);
 
         Document document = new Document(chunk.getChunkContent());
         AiKnowledgeChunk aiKnowledgeChunk = buildAiKnowledgeChunk(document, chunk.getKnowledgeId(), chunk.getDocId(), chunk.getChunkNo());

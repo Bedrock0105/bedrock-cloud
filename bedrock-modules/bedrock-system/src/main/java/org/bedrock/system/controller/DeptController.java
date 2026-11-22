@@ -5,7 +5,6 @@ import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import org.bedrock.common.auth.util.AuthUtil;
 import org.bedrock.common.boot.base.BaseController;
 import org.bedrock.common.code.api.R;
 import org.bedrock.common.log.annotation.OperationLog;
@@ -72,4 +71,5 @@ public class DeptController extends BaseController {
     public R<Void> remove(Long id) {
         return R.status(deptService.removeById(id));
     }
+
 }

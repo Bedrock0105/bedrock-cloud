@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.bedrock.ai.mapper.AiSkillMapper">
+
+    <resultMap id="selectDetailByIdResultMap" type="org.bedrock.ai.vo.AiSkillDetailVO">
+        <id property="id" column="id"/>
+        <result property="label" column="label"/>
+        <result property="name" column="name"/>
+        <result property="description" column="description"/>
+        <result property="status" column="status"/>
+        <result property="remark" column="remark"/>
+        <result property="tenantId" column="tenant_id"/>
+        <collection property="files" ofType="org.bedrock.ai.vo.AiSkillFileVO"
+                    select="org.bedrock.ai.mapper.AiSkillFileMapper.selectBySkillId"
+                    column="{skillId=id}">
+        </collection>
+    </resultMap>
+
+    <select id="selectDetailById" resultMap="selectDetailByIdResultMap">
+        SELECT id,
+               label,
+               name,
+               description,
+               status,
+               remark,
+               tenant_id
+        FROM bedrock_ai_skill
+        WHERE id = #{id}
+          AND is_deleted = 0
+    </select>
+
+    <select id="selectAiSkillList" resultType="org.bedrock.ai.vo.AiSkillListVO">
+        SELECT id,
+        label,
+        name,
+        description,
+        status,
+        remark
+        FROM bedrock_ai_skill
+        WHERE is_deleted = 0
+        <if test="param.label != null and param.label != ''">
+            AND label LIKE concat('%', #{param.label}, '%')
+        </if>
+        <if test="param.name != null and param.name != ''">
+            AND name LIKE concat('%', #{param.name}, '%')
+        </if>
+        <if test="param.status != null">
+            AND status = #{param.status}
+        </if>
+        ORDER BY create_time DESC
+    </select>
+</mapper>

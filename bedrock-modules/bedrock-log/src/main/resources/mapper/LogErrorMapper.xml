@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.bedrock.log.mapper.LogErrorMapper">
+    <select id="selectLogErrorList" resultType="org.bedrock.log.vo.LogErrorListVO">
+        select
+        id,
+        exception_name, exception_message,
+        service_name, server_ip, env, remote_ip,
+        request_url, request_type, create_time
+        from bedrock_log_error ble
+        <where>
+            <if test="param.startTime != null">
+                and ble.create_time &gt;= #{param.startTime}
+            </if>
+            <if test="param.endTime != null">
+                and ble.create_time &lt;= #{param.endTime}
+            </if>
+            <if test="param.exceptionName != null and param.exceptionName != ''">
+                and ble.exception_name like concat('%',#{param.exceptionName},'%')
+            </if>
+            <if test="param.exceptionMessage != null and param.exceptionMessage != ''">
+                and ble.exception_message like concat('%',#{param.exceptionMessage},'%')
+            </if>
+            <if test="param.serviceName != null and param.serviceName != ''">
+                and ble.service_name like concat('%',#{param.serviceName},'%')
+            </if>
+            <if test="param.serverIp != null and param.serverIp != ''">
+                and ble.server_ip like concat('%',#{param.serverIp},'%')
+            </if>
+            <if test="param.remoteIp != null and param.remoteIp != ''">
+                and ble.remote_ip like concat('%',#{param.remoteIp},'%')
+            </if>
+            <if test="param.requestUrl != null and param.requestUrl != ''">
+                and ble.request_url like concat('%',#{param.requestUrl},'%')
+            </if>
+            <if test="param.requestType != null and param.requestType != ''">
+                and ble.request_type = #{param.requestType}
+            </if>
+            <if test="param.env != null and param.env != ''">
+                and ble.env like concat('%',#{param.env},'%')
+            </if>
+        </where>
+        order by ble.create_time desc
+    </select>
+</mapper>

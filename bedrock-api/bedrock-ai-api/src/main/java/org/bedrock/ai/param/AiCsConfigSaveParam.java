@@ -38,7 +38,7 @@ public class AiCsConfigSaveParam implements Serializable {
 	@Schema(description = "默认模型 id", requiredMode = Schema.RequiredMode.REQUIRED)
 	private Long modelId;
 
-	@Schema(description = "对话调用配置（知识库必填）")
+	@Schema(description = "对话调用配置")
 	private AiChatOptions chatOptions;
 
 	@Schema(description = "配置状态（1=启用，0=禁用）")

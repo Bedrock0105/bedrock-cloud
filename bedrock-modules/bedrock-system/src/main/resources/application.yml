@@ -1,7 +1,6 @@
 server:
   port: 8082
 bedrock:
-  authentication:
-    secret-key: MIHwMIGoBgcqhkjOOsdsAQBMIGcAkEAKaCzo4Syrom78z3EQ5SbbB4sF7ey80etKII
-    jwt-iss: github
-    jwt-subject: github.com
+  monitor:
+    # 仅本节点做内存汇总（其它服务只开 enabled 采集即可）
+    aggregate-enabled: true

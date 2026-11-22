@@ -152,9 +152,10 @@ public class AiKnowledgeServiceImpl extends BaseServiceImpl<AiKnowledgeMapper, A
     public boolean enableStatus(Long id, Integer status) {
         AiKnowledge aiKnowledge = this.getById(id);
         LogRecordContext.putVariable("knowledgeName", aiKnowledge.getKnowledgeName());
-        LogRecordContext.putVariable("status", status);
         return this.update(Wrappers.<AiKnowledge>lambdaUpdate()
                 .eq(BaseEntity::getId, id)
+                .set(BaseEntity::getUpdateTime, LocalDateTime.now())
+                .set(BaseEntity::getUpdateUserId, AuthUtil.getUserId())
                 .set(AiKnowledge::getStatus, status));
     }
 

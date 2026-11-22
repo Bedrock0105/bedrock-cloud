@@ -27,6 +27,7 @@ import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -118,12 +119,13 @@ public class AiVectorDbServiceImpl extends BaseServiceImpl<AiVectorDbMapper, AiV
     public boolean enableStatus(Long id, Integer status) {
         AiVectorDb aiVectorDb = this.getById(id);
         LogRecordContext.putVariable("dbName", aiVectorDb.getDbName());
-        LogRecordContext.putVariable("status", status);
         if (BedrockDBConstant.DB_STATUS_DISABLE.equals(status)) {
             vectorStoreFactory.removeVectorStoreContains(id.toString());
         }
         return this.update(Wrappers.<AiVectorDb>lambdaUpdate()
                 .eq(BaseEntity::getId, id)
+                .set(BaseEntity::getUpdateTime, LocalDateTime.now())
+                .set(BaseEntity::getUpdateUserId, AuthUtil.getUserId())
                 .set(AiVectorDb::getStatus, status));
     }
 

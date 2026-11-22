@@ -15,6 +15,7 @@ import org.bedrock.ai.vo.AiMcpDetailVO;
 import org.bedrock.ai.vo.AiMcpListVO;
 import org.bedrock.common.ai.mcp.McpManager;
 import org.bedrock.common.ai.mcp.McpManager.McpClientParameters;
+import org.bedrock.common.auth.util.AuthUtil;
 import org.bedrock.common.code.util.BeanUtil;
 import org.bedrock.common.code.util.StringUtil;
 import org.bedrock.common.log.exception.ServiceException;
@@ -28,6 +29,7 @@ import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
@@ -105,9 +107,10 @@ public class AiMcpServiceImpl extends BaseServiceImpl<AiMcpMapper, AiMcp> implem
                     AiErrorEnum.MCP_NOT_FOUND.getMessage());
         }
         LogRecordContext.putVariable("mcpName", existing.getName());
-        LogRecordContext.putVariable("status", status);
         boolean updated = update(Wrappers.<AiMcp>lambdaUpdate()
                 .eq(BaseEntity::getId, id)
+                .set(BaseEntity::getUpdateTime, LocalDateTime.now())
+                .set(BaseEntity::getUpdateUserId, AuthUtil.getUserId())
                 .set(AiMcp::getStatus, status));
         if (!updated) {
             return false;

@@ -26,7 +26,7 @@ public class SmsConfigServiceImpl extends BaseServiceImpl<SmsConfigMapper, SmsCo
     public boolean submit(SmsConfigSubmitParam param) {
         if (exists(Wrappers.<SmsConfig>lambdaQuery()
                 .eq(SmsConfig::getConfigCode, param.getConfigCode())
-                .eq(BaseEntity::getIsDeleted, BedrockDBConstant.DB_STATUS_NORMAL))) {
+                .eq(BaseEntity::getIsDeleted, BedrockDBConstant.DB_NOT_DELETED))) {
             throw new ServiceException(ResourceErrorEnum.THE_CODE_ALREADY_EXISTS.getCode(), ResourceErrorEnum.THE_CODE_ALREADY_EXISTS.getMessage());
         }
         SmsConfig smsConfig = BeanUtil.copyProperties(param, SmsConfig.class);
@@ -37,7 +37,7 @@ public class SmsConfigServiceImpl extends BaseServiceImpl<SmsConfigMapper, SmsCo
     public boolean edit(SmsConfigSubmitParam param) {
         if (exists(Wrappers.<SmsConfig>lambdaQuery()
                 .eq(SmsConfig::getConfigCode, param.getConfigCode())
-                .eq(BaseEntity::getIsDeleted, BedrockDBConstant.DB_STATUS_NORMAL)
+                .eq(BaseEntity::getIsDeleted, BedrockDBConstant.DB_NOT_DELETED)
                 .ne(BaseEntity::getId, param.getId()))) {
             throw new ServiceException(ResourceErrorEnum.THE_CODE_ALREADY_EXISTS.getCode(), ResourceErrorEnum.THE_CODE_ALREADY_EXISTS.getMessage());
         }

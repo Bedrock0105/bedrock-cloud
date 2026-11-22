@@ -26,7 +26,7 @@ public class EmailConfigServiceImpl extends BaseServiceImpl<EmailConfigMapper, E
     public boolean submit(EmailConfigSubmitParam param) {
         if (exists(Wrappers.<EmailConfig>lambdaQuery()
                 .eq(EmailConfig::getConfigCode, param.getConfigCode())
-                .eq(BaseEntity::getIsDeleted, BedrockDBConstant.DB_STATUS_NORMAL))) {
+                .eq(BaseEntity::getIsDeleted, BedrockDBConstant.DB_NOT_DELETED))) {
             throw new ServiceException(ResourceErrorEnum.THE_CODE_ALREADY_EXISTS.getCode(), ResourceErrorEnum.THE_CODE_ALREADY_EXISTS.getMessage());
         }
         EmailConfig emailConfig = BeanUtil.copyProperties(param, EmailConfig.class);
@@ -37,7 +37,7 @@ public class EmailConfigServiceImpl extends BaseServiceImpl<EmailConfigMapper, E
     public boolean edit(EmailConfigSubmitParam param) {
         if (exists(Wrappers.<EmailConfig>lambdaQuery()
                 .eq(EmailConfig::getConfigCode, param.getConfigCode())
-                .eq(BaseEntity::getIsDeleted, BedrockDBConstant.DB_STATUS_NORMAL)
+                .eq(BaseEntity::getIsDeleted, BedrockDBConstant.DB_NOT_DELETED)
                 .ne(BaseEntity::getId, param.getId()))) {
             throw new ServiceException(ResourceErrorEnum.THE_CODE_ALREADY_EXISTS.getCode(), ResourceErrorEnum.THE_CODE_ALREADY_EXISTS.getMessage());
         }

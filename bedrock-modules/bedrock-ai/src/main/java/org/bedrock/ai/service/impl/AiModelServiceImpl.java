@@ -39,6 +39,7 @@ import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -143,9 +144,10 @@ public class AiModelServiceImpl extends BaseServiceImpl<AiModelMapper, AiModel> 
     public boolean enableStatus(Long id, Integer status) {
         AiModel aiModel = this.getById(id);
         LogRecordContext.putVariable("modelName", aiModel.getModelName());
-        LogRecordContext.putVariable("status", status);
         return this.update(Wrappers.<AiModel>lambdaUpdate()
                 .eq(BaseEntity::getId, id)
+                .set(BaseEntity::getUpdateTime, LocalDateTime.now())
+                .set(BaseEntity::getUpdateUserId, AuthUtil.getUserId())
                 .set(AiModel::getStatus, status));
     }
 

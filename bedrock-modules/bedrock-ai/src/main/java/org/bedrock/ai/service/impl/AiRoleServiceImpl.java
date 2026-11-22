@@ -20,6 +20,7 @@ import org.bedrock.common.mybatisplus.constant.BedrockDBConstant;
 import org.bedrock.common.tenant.base.TenantEntity;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -96,9 +97,10 @@ public class AiRoleServiceImpl extends BaseServiceImpl<AiRoleMapper, AiRole> imp
     public boolean enableStatus(Long id, Integer status) {
         AiRole aiRole = this.getById(id);
         LogRecordContext.putVariable("roleName", aiRole.getRoleName());
-        LogRecordContext.putVariable("status", status);
         return this.update(Wrappers.<AiRole>lambdaUpdate()
                 .eq(BaseEntity::getId, id)
+                .set(BaseEntity::getUpdateTime, LocalDateTime.now())
+                .set(BaseEntity::getUpdateUserId, AuthUtil.getUserId())
                 .set(AiRole::getStatus, status));
     }
 

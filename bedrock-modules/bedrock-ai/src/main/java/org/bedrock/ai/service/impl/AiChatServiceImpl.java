@@ -524,7 +524,8 @@ public class AiChatServiceImpl implements IAiChatService {
         PromptAugmentationAdvisor promptAdvisor = chatKit.promptAdvisor();
         Map<String, Object> context = buildAdvisorContext(chatRecord, modelCheckVO, attachments);
         AiChatOptions sessionOptions = chatRecord.getChatOptions();
-        List<ToolCallback> toolCallbacks = resolveToolCallbacks(sessionOptions.getTools(), sessionOptions.getMcpIds());
+        List<ToolCallback> toolCallbacks = resolveToolCallbacks(
+                sessionOptions.getTools(), sessionOptions.getMcpIds(), sessionOptions.getSkillIds());
         ChatOptions chatOptions = chatKit.getChatOptions(
                 modelCheckVO.getPlatform(), chatRecord, modelCheckVO, toolCallbacks, context);
 
@@ -576,25 +577,21 @@ public class AiChatServiceImpl implements IAiChatService {
     }
 
     /**
-     * 根据会话配置解析工具回调（内置工具组 + MCP）。
+     * 根据会话配置解析工具回调（内置工具组 + MCP + Skill）。
      */
-    private List<ToolCallback> resolveToolCallbacks(List<String> tools, List<String> mcpIds) {
+    private List<ToolCallback> resolveToolCallbacks(List<String> tools, List<String> mcpIds, List<String> skillIds) {
         List<ToolCallback> callbacks = new ArrayList<>();
         if (CollectionUtil.isNotEmpty(tools)) {
-            tools.stream()
-                    .map(String::trim)
-                    .filter(StringUtil::isNotBlank)
-                    .map(toolName -> chatKit.toolManager().getCallbacks(toolName))
-                    .flatMap(List::stream)
-                    .forEach(callbacks::add);
+            callbacks.addAll(chatKit.toolManager().getCallbacks(tools));
         }
         if (CollectionUtil.isNotEmpty(mcpIds)) {
-            mcpIds.stream()
-                    .map(String::trim)
-                    .filter(StringUtil::isNotBlank)
-                    .map(mcpId -> chatKit.mcpManager().getCallbacks(mcpId))
-                    .flatMap(List::stream)
-                    .forEach(callbacks::add);
+            callbacks.addAll(chatKit.mcpManager().getCallbacks(mcpIds));
+        }
+        if (CollectionUtil.isNotEmpty(skillIds)) {
+            ToolCallback skillCallback = chatKit.skillManager().getCallback(skillIds);
+            if (skillCallback != null) {
+                callbacks.add(skillCallback);
+            }
         }
         return callbacks;
     }

@@ -2,6 +2,7 @@ package org.bedrock.ai.config;
 
 import lombok.RequiredArgsConstructor;
 import org.bedrock.ai.advisor.prompt.AiPromptAugmenter;
+import org.bedrock.ai.props.AiProperties;
 import org.bedrock.common.ai.advisor.ChatHistoryAdvisor;
 import org.bedrock.common.ai.advisor.KnowledgeRetrievalAdvisor;
 import org.bedrock.common.ai.advisor.PromptAugmentationAdvisor;
@@ -11,6 +12,7 @@ import org.bedrock.common.ai.advisor.knowledge.KnowledgeRetriever;
 import org.bedrock.common.ai.advisor.usage.TokenUsageRecorder;
 import org.springframework.ai.chat.client.advisor.ToolCallAdvisor;
 import org.springframework.ai.model.tool.ToolCallingManager;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.task.TaskDecorator;
@@ -21,6 +23,7 @@ import java.util.concurrent.ThreadPoolExecutor;
 
 @Configuration
 @RequiredArgsConstructor
+@EnableConfigurationProperties(AiProperties.class)
 public class AiConfiguration {
 
     private final ChatHistoryStore chatHistoryStore;

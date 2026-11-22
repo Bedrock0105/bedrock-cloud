@@ -15,6 +15,10 @@ public enum SystemErrorEnum implements ResultCode {
     PARAM_CONFIG_KEY_EXISTS(11008, "当前参数配置键已存在!"),
     PACKAGE_HAS_TENANT(11009, "当前套餐已被使用!"),
     DEPT_CODE_EXISTS(11010, "当前部门编号已存在!"),
+    CACHE_NAME_NOT_ALLOWED(11011, "缓存名称不在可清理白名单内!"),
+    HOST_METRIC_NOT_FOUND(11012, "主机监控指标不存在!"),
+    JVM_METRIC_NOT_FOUND(11013, "JVM 监控指标不存在!"),
+    MONITOR_NOT_ENABLED(11014, "主机监控汇总未启用（需 aggregate-enabled=true）或依赖未加载!"),
     ;
 
     private final int code;

@@ -157,9 +157,10 @@ public class AiKnowledgeDocServiceImpl extends BaseServiceImpl<AiKnowledgeDocMap
                     AiErrorEnum.KNOWLEDGE_DOC_NOT_FOUND.getMessage());
         }
         LogRecordContext.putVariable("docTitle", doc.getDocTitle());
-        LogRecordContext.putVariable("status", status);
         return update(Wrappers.<AiKnowledgeDoc>lambdaUpdate()
                 .eq(BaseEntity::getId, id)
+                .set(BaseEntity::getUpdateTime, LocalDateTime.now())
+                .set(BaseEntity::getUpdateUserId, AuthUtil.getUserId())
                 .set(AiKnowledgeDoc::getStatus, status));
     }
 

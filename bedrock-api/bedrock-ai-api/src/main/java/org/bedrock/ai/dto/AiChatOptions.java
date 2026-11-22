@@ -38,6 +38,9 @@ public class AiChatOptions implements Serializable {
     @Schema(description = "关联 MCP 配置 id（字符串，对应 bedrock_ai_mcp.id）")
     private List<String> mcpIds;
 
+    @Schema(description = "关联 Skill id（字符串，对应 bedrock_ai_skill.id）")
+    private List<String> skillIds;
+
     @Schema(description = "关联知识库检索参数")
     private List<KnowledgeParam> knowledgeParams;
 
@@ -86,38 +89,17 @@ public class AiChatOptions implements Serializable {
 
     /**
      * 知识库检索参数
-     * 本来是 记录类但是Protostuff不支持
+     * Protostuff不支持Java Record是老版本protostuff的限制，语法上可以改成下面这样
      */
-    @Getter
-    @Setter
-    public static class KnowledgeParam {
+    public record KnowledgeParam(
+            @Schema(description = "知识库 id")
+            String knowledgeId,
+            @Schema(description = "相似度阈值")
+            Double similarity,
+            @Schema(description = "TopK")
+            Integer topK
+    ) {
 
-        public KnowledgeParam(String knowledgeId, Double similarity, Integer topK) {
-            this.knowledgeId = knowledgeId;
-            this.similarity = similarity;
-            this.topK = topK;
-        }
-
-        @Schema(description = "知识库 id")
-        private String knowledgeId;
-
-        @Schema(description = "相似度阈值")
-        private Double similarity;
-
-        @Schema(description = "TopK")
-        private Integer topK;
-
-        public String knowledgeId() {
-            return this.knowledgeId;
-        }
-
-        public Double similarity() {
-            return this.similarity;
-        }
-
-        public Integer topK() {
-            return this.topK;
-        }
     }
 
 }

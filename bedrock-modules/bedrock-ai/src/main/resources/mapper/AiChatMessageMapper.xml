@@ -26,9 +26,7 @@
           AND m.is_deleted = 0
           and m.role in ('assistant', 'user')
           AND NOT (m.role = 'assistant'
-            AND (m.content IS NULL)
-            AND (m.reasoning IS NULL)
-            AND (m.tool_calls IS NULL))
+            AND (m.content IS NULL))
     </select>
 
     <resultMap id="AiChatMessageHistoryMap" type="org.bedrock.ai.entity.AiChatMessage">

@@ -10,7 +10,8 @@ import org.springframework.context.annotation.Description;
 import org.springframework.stereotype.Component;
 
 import java.util.function.BiFunction;
-@ToolProvider(kind = ToolProvider.Kind.FUNCTION,label = "获取当前用户")
+
+@ToolProvider(kind = ToolProvider.Kind.FUNCTION, label = "获取当前用户")
 @Component("get_current_user")
 @Description("Get current user information")
 public class CurrentUserToolFunction implements BiFunction<CurrentUserToolFunction.CurrentUserToolFunctionInput, ToolContext, CurrentUserToolFunction.CurrentUserToolFunctionOutput> {

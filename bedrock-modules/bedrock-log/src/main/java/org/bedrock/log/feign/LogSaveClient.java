@@ -4,11 +4,16 @@ import io.swagger.v3.oas.annotations.Hidden;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.bedrock.common.log.feign.ILogSaveFeign;
+import org.bedrock.common.log.model.LogError;
 import org.bedrock.common.log.model.LogOperation;
+import org.bedrock.log.service.ILogErrorService;
 import org.bedrock.log.service.ILogOperationService;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * 日志落库 Feign 实现（操作日志 / 错误日志）
+ */
 @Slf4j
 @Hidden
 @RestController
@@ -17,8 +22,15 @@ public class LogSaveClient implements ILogSaveFeign {
 
     private final ILogOperationService logOperationService;
 
+    private final ILogErrorService logErrorService;
+
     @Override
     public void save(@RequestBody LogOperation logOperation) {
         logOperationService.save(logOperation);
+    }
+
+    @Override
+    public void saveError(@RequestBody LogError logError) {
+        logErrorService.save(logError);
     }
 }

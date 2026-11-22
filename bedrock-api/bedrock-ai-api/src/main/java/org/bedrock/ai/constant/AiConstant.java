@@ -58,4 +58,14 @@ public interface AiConstant {
      * 分片向量化状态：向量写入失败
      */
     Integer EMBED_STATUS_FAILED = 2;
+
+    /**
+     * Skill 文件节点：非文本，内容存 file_url
+     */
+    Integer SKILL_FILE_IS_TEXT_NO = 0;
+
+    /**
+     * Skill 文件节点：文本，内容存 content
+     */
+    Integer SKILL_FILE_IS_TEXT_YES = 1;
 }

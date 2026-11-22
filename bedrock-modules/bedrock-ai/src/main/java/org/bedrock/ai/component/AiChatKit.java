@@ -12,6 +12,7 @@ import org.bedrock.common.ai.advisor.PromptAugmentationAdvisor;
 import org.bedrock.common.ai.advisor.TokenUsageStatisticsAdvisor;
 import org.bedrock.common.ai.enums.AiPlatformEnum;
 import org.bedrock.common.ai.mcp.McpManager;
+import org.bedrock.common.ai.skill.SkillManager;
 import org.bedrock.common.ai.tool.ToolManager;
 import org.springframework.ai.chat.client.advisor.ToolCallAdvisor;
 import org.springframework.ai.chat.prompt.ChatOptions;
@@ -37,6 +38,7 @@ import java.util.Map;
  * @param modelOptions      各平台 ChatOptions 构建器
  * @param toolManager       各平台工具管理器
  * @param mcpManager        MCP 客户端管理器
+ * @param skillManager      技能管理器
  * @param transformer       文档拆分工厂
  * @param documentReader    文档读取器
  */
@@ -49,6 +51,7 @@ public record AiChatKit(ChatHistoryAdvisor historyAdvisor,
                         ModelOptionsSupport modelOptions,
                         ToolManager toolManager,
                         McpManager mcpManager,
+                        SkillManager skillManager,
                         TransformerFactory transformer,
                         DocumentReaderFactory documentReader
 ) {
